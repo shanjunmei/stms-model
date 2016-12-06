@@ -1,0 +1,826 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ffzx.stms.mapper.PriceSchemeMapper" >
+	<resultMap id="BaseResultMap" type="com.ffzx.stms.model.PriceScheme" >
+	  <id column="id" property="id" jdbcType="VARCHAR" />
+	  <result column="commodity_code" property="commodity.code" jdbcType="VARCHAR" />
+	  <result column="vendor_code" property="vendor.code" jdbcType="VARCHAR" />
+	  <result column="purchase_type" property="purchaseType" jdbcType="CHAR" />
+	  <result column="settlement_pattern" property="settlementPattern" jdbcType="CHAR" />
+	  <result column="type" property="type" jdbcType="CHAR" />
+	  <result column="code" property="code" jdbcType="VARCHAR" />
+	  <result column="name" property="name" jdbcType="VARCHAR" />
+	  <result column="status" property="status" jdbcType="CHAR" />
+	  <result column="effective_time" property="effectiveTime" jdbcType="TIMESTAMP" />
+	  <result column="invalid_time" property="invalidTime" jdbcType="TIMESTAMP" />
+	  <result column="create_by" property="createBy.id" jdbcType="VARCHAR" />
+	  <result column="create_by_name" property="createBy.name" jdbcType="VARCHAR" />
+	  <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+	  <result column="last_update_by" property="lastUpdateBy.id" jdbcType="VARCHAR" />
+	  <result column="last_update_by_name" property="lastUpdateBy.name" jdbcType="VARCHAR" />
+	  <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+	  <result column="cancel_by" property="cancelBy.id" jdbcType="VARCHAR" />
+	  <result column="cancel_by_name" property="cancelBy.name" jdbcType="VARCHAR" />
+	  <result column="cancel_date" property="cancelDate" jdbcType="TIMESTAMP" />
+	  <result column="act_flag" property="actFlag" jdbcType="CHAR" />
+	  <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+	</resultMap>
+	<sql id="Base_Column_List" >
+	  t.id, t.commodity_code, t.vendor_code, t.purchase_type, t.settlement_pattern, t.type, t.code, t.name, 
+	  t.status, t.effective_time, t.invalid_time, t.create_by as 'createBy.id', t.create_by_name as 'createBy.name', 
+	  t.create_date, t.last_update_by as 'lastUpdateBy.id', t.last_update_by_name as 'lastUpdateBy.name', 
+	  t.last_update_date, t.cancel_by as 'cancelBy.id', t.cancel_by_name as 'cancelBy.name', 
+      t.cancel_date, t.act_flag, t.del_flag
+	</sql>
+	<sql id="PriceSchemeDetail_Column_List">
+		psd.id, 
+		psd.effective_programme_code, 
+		psd.sku_barcode,
+		psd.commodity_attribute_values, 
+		psd.sku_act_flag,
+		psd.create_by as 'createBy.id', 
+		psd.create_by_name as 'createBy.name', 
+		psd.create_date,
+		psd.last_update_by as 'lastUpdateBy.id',
+		psd.last_update_by_name as 'lastUpdateBy.name', 
+		psd.last_update_date, 
+		psd.act_flag, 
+		psd.points,
+		psd.supply_price
+	</sql>
+	<sql id="inStatusList">
+		<if test="params.statusList != null">
+			<foreach collection="params.statusList" item="status" open="and status in(" close=")" separator=",">
+				#{status}
+			</foreach>
+		</if>
+	</sql>
+	<sql id="condition">
+		<if test="null!=params">
+			<if test="params.id != null and '' != params.id">
+				and t.id = #{params.id,jdbcType=VARCHAR}
+			</if>
+			<if test="params.commodityCode != null and '' != params.commodityCode">
+				and t.commodity_code = #{params.commodityCode,jdbcType=VARCHAR}
+			</if>
+			<if test="params.vendorCode != null and '' != params.vendorCode">
+				and t.vendor_code = #{params.vendorCode,jdbcType=VARCHAR}
+			</if>
+			<if test="params.purchaseType != null and '' != params.purchaseType">
+				and t.purchase_type = #{params.purchaseType,jdbcType=CHAR}
+			</if>
+			<if test="params.settlementPattern != null and '' != params.settlementPattern">
+				and t.settlement_pattern = #{params.settlementPattern,jdbcType=CHAR}
+			</if>
+			<if test="params.type != null and '' != params.type">
+				and t.type = #{params.type,jdbcType=CHAR}
+			</if>
+			<if test="params.code != null and '' != params.code">
+				and t.code = #{params.code,jdbcType=VARCHAR}
+			</if>
+			<if test="params.name != null and '' != params.name">
+				and t.name = #{params.name,jdbcType=VARCHAR}
+			</if>
+			<if test="params.status != null and '' != params.status">
+				and t.status = #{params.status,jdbcType=CHAR}
+			</if>
+			<if test="params.effectiveTime != null">
+				and t.effective_time = #{params.effectiveTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="params.invalidTime != null">
+				and t.invalid_time = #{params.invalidTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="params.createBy != null and '' != params.createBy">
+				and t.create_by = #{params.createBy.id,jdbcType=VARCHAR}
+			</if>
+			<if test="params.createByName != null and '' != params.createByName">
+				and t.create_by_name = #{params.createBy.name,jdbcType=VARCHAR}
+			</if>
+			<if test="params.createDate != null">
+				and t.create_date = #{params.createDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="params.lastUpdateBy != null and '' != params.lastUpdateBy">
+				and t.last_update_by = #{params.lastUpdateBy.id,jdbcType=VARCHAR}
+			</if>
+			<if test="params.lastUpdateByName != null and '' != params.lastUpdateByName">
+				and t.last_update_by_name =
+				#{params.lastUpdateBy.name,jdbcType=VARCHAR}
+			</if>
+			<if test="params.lastUpdateDate != null">
+				and t.last_update_date = #{params.lastUpdateDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="params.actFlag != null and '' != params.actFlag">
+				and t.act_flag = #{params.actFlag,jdbcType=CHAR}
+			</if>
+			<if test="params.delFlag != null and '' != params.delFlag">
+				and t.del_flag = #{params.delFlag,jdbcType=CHAR}
+			</if>
+			<if test="params.commodityCodeList != null">
+                <!-- 实现  “ and id IN(1,10,16)”拼接 -->
+	            <foreach collection="params.commodityCodeList" item="commodityCode" open="and commodity_code in(" close=")" separator=",">
+	                #{commodityCode}
+	            </foreach>			    
+			</if>
+			<include refid="inStatusList" />
+		</if>
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	  select 
+	  <include refid="Base_Column_List" />
+	  from price_scheme t 
+	  where t.id = #{id,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByParams" resultMap="BaseResultMap" parameterType="map" >
+	  select 
+	  <include refid="Base_Column_List" />
+	  from price_scheme t 
+	  where 1=1
+	  <include refid="condition" />
+	</select>
+	<select id="selectCount" resultType="java.lang.Integer" >
+	  select count(1) as s from price_scheme t  where 1=1
+	  <include refid="condition" />
+	</select>
+	<select id="selectByPage" resultMap="BaseResultMap" parameterType="map" >
+	  select 
+	  <include refid="Base_Column_List" />
+	  from price_scheme t 
+	  where 1=1
+	  <include refid="condition" />
+	  <if test="orderByField != null and ''!=orderByField" >
+	    order by t.${orderByField} 
+	    <if test="orderByField" >
+	      ${orderBy}
+	    </if>
+	  </if>
+	</select>
+
+	<select id="findByList" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from price_scheme t
+		where 1=1
+		<include refid="condition" />
+		<if test="orderByField != null and ''!=orderByField">
+			order by t.${orderByField}
+			<if test="orderByField">
+				${orderBy}
+			</if>
+		</if>
+	</select>
+	<select id="getPriceSchemeAndDetail" resultMap="PriceSchemeAndPriceSchemeDetailResultMap" parameterType="map">
+		select
+		    <include refid="Base_Column_List" />
+		    ,
+		    <include refid="PriceSchemeDetail_Column_List" />
+		from
+		    price_scheme t inner join price_scheme_detail psd on t.code = psd.effective_programme_code 
+		where
+		    t.effective_time = (
+		        select
+		            max(effective_time) maxeffecttime
+		        from
+		            price_scheme current
+		        where
+		            current.effective_time &lt; #{params.date}
+	            <choose>
+                   <when test="params.flag == 0">
+                       and current.invalid_time &gt; #{params.date}
+                   </when>
+                   <otherwise>
+                   </otherwise>
+                </choose>
+<!-- 		        and current.invalid_time &gt; #{params.date} -->
+		        and current.type = #{params.type}
+		        <if test="params.commodityCode != null and '' != params.commodityCode">
+		        and current.commodity_code = #{params.commodityCode,jdbcType=VARCHAR}
+		        </if>
+		        and settlement_pattern = #{params.settlementPattern}
+		        <include refid="inStatusList" />   
+		    )
+		and t.effective_time &lt; #{params.date}
+        <choose>
+          <when test="params.flag == 0">
+              and t.invalid_time &gt; #{params.date}
+          </when>
+          <otherwise>
+          </otherwise>
+        </choose>
+<!-- 		and t.invalid_time &gt; #{params.date} -->
+		and t.type = #{params.type}
+		<if test="params.commodityCode != null and '' != params.commodityCode">
+			and commodity_code = #{params.commodityCode,jdbcType=VARCHAR}
+		</if>
+		<if test="params.skuBarcode != null and '' != params.skuBarcode" >
+			and psd.sku_barcode = #{params.skuBarcode,jdbcType=VARCHAR}
+		</if>
+		and settlement_pattern = #{params.settlementPattern}
+		<include refid="inStatusList" />   
+	</select>
+	<select id="getPriceScheme" resultMap="BaseResultMap" parameterType="map">
+        select
+            <include refid="Base_Column_List" />
+        from
+            price_scheme t
+        where
+            t.effective_time = (
+                select
+                    max(effective_time) maxeffecttime
+                from
+                    price_scheme current
+                where
+                    current.effective_time &lt; #{params.date}
+                <choose>
+			        <when test="params.flag == 0">
+			            and current.invalid_time &gt; #{params.date}
+			        </when>
+			        <otherwise>
+			        </otherwise>
+			    </choose>  
+                and current.type = #{params.type}
+                and current.commodity_code = #{params.commodityCode}
+                and settlement_pattern = #{params.settlementPattern}
+                <include refid="inStatusList" />  
+            )
+        and t.effective_time &lt; #{params.date}
+        <choose>
+            <when test="params.flag == 0">
+                and t.invalid_time &gt; #{params.date}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+        and t.type = #{params.type}
+        and commodity_code = #{params.commodityCode}
+        and settlement_pattern = #{params.settlementPattern}
+        <include refid="inStatusList" />  
+    </select>
+	<select id="findStandbySchemeByCommodityCode" resultMap="BaseResultMap" parameterType="map">
+		select
+		    *
+		from
+		    price_scheme t
+		where
+		    t.effective_time = (
+		        select
+		            min(effective_time) mineffecttime
+		        from
+		            price_scheme ps
+		        where
+		            ps.effective_time > #{params.date}
+		        and commodity_code = #{params.commodityCode}
+		        and settlement_pattern = #{params.settlementPattern}
+		        <include refid="inStatusList" />
+		    )
+		and t.effective_time > #{params.date}
+		and commodity_code = #{params.commodityCode}
+		and settlement_pattern = #{params.settlementPattern}
+        <include refid="inStatusList" />
+	</select>
+	<select id="getNormalPriceScheme" resultMap="BaseResultMap" parameterType="map">
+        select
+            *
+        from
+            price_scheme t
+        where
+            t.effective_time &lt; #{params.date}
+        and commodity_code = #{params.commodityCode}
+        and settlement_pattern = #{params.settlementPattern}
+        and type = #{params.type}
+        <include refid="inStatusList" />
+    </select>
+	<select id="selectCommodityAndVendorByCommodityCode" resultMap="PriceSchemeDetailResultMap" parameterType="String">
+        select
+        <include refid="commodity_column_list" />
+        ,
+        <include refid="vendor_column_list" />
+        ,
+        <include refid="sku_column_list" />
+        from
+        cims_db.commodity c
+        left join uc_db.vendor v on v.code = c.vendor_code
+        left join cims_db.commodity_sku sku on c.code = sku.commodity_code
+        where commodity_code = #{value}
+    </select>
+	<select id="selectById" resultMap="PriceSchemeDetailResultMap" parameterType="String">
+		select
+		<include refid="price_scheme_column_list" />
+        ,
+		<include refid="commodity_column_list" />
+		,
+		<include refid="vendor_column_list" />
+		,
+		<include refid="price_scheme_detail_column_list" />
+<!-- 		, -->
+<!-- 		<include refid="sku_column_list" /> -->
+		from
+		    price_scheme ps 
+		inner join cims_db.commodity c on c.code = ps.commodity_code
+		inner join uc_db.vendor v on v.code = c.vendor_code
+		inner join price_scheme_detail psd on ps.code = psd.effective_programme_code  
+<!-- 		inner join cims_db.commodity_sku sku on commodity.code = sku.commodity_code -->
+		where ps.id = #{value}
+	</select>
+	<select id="selectByVendorCommodityList" resultMap="PriceSchemeResultMap" parameterType="com.ffzx.stms.vo.PriceSchemeVo" >
+	  select 
+	  <include refid="commodity_column_list" />
+	  ,
+	  <include refid="vendor_column_list" />
+	  from 
+	      cims_db.commodity c 
+		inner join uc_db.vendor v on c.vendor_code = v.code
+	  where 1=1
+	  <include refid="query_priceschemevo_where" />
+	  <if test="orderByField != null and ''!=orderByField" > 
+ 	    order by c.${orderByField} 
+ 	    <if test="orderByField" > 
+ 	      ${orderBy} 
+ 	    </if> 
+ 	  </if> 
+	</select>
+	<sql id="query_priceschemevo_where">
+		<if test="priceSchemeVo != null">
+            <!-- 商品的查询条件 -->
+		    <if test="priceSchemeVo.commodity != null">
+		        <if test="priceSchemeVo.commodity.code != null and '' != priceSchemeVo.commodity.code">
+                    and c.code = #{priceSchemeVo.commodity.code}
+                </if>
+            </if>
+            <!-- 供应商的查询条件 -->
+            <if test="priceSchemeVo.vendor != null">
+                <if test="priceSchemeVo.vendor.code != null and '' != priceSchemeVo.vendor.code">
+                    and v.code = #{priceSchemeVo.vendor.code}
+                </if>
+                <if test="priceSchemeVo.vendor.purchaseType != null and '' != priceSchemeVo.vendor.purchaseType">
+                    and v.purchase_type = #{priceSchemeVo.vendor.purchaseType}
+                </if>
+                <if test="priceSchemeVo.vendor.settlementType != null and '' != priceSchemeVo.vendor.settlementType">
+                    and v.settlement_type = #{priceSchemeVo.vendor.settlementType}
+                </if>
+            </if>
+            <!-- 方案的查询条件 -->
+<!--             <if test="priceSchemeVo.priceScheme != null"> -->
+<!--                 <if test="priceSchemeVo.priceScheme.settlementPattern != null"> -->
+<!--                        and t.id = #{params.id,jdbcType=VARCHAR} -->
+<!--                 </if> -->
+<!--             </if> -->
+		</if>
+    </sql>
+	<sql id="commodity_column_list" >
+	  c.bar_code as commodityBarCode, c.name as commodityName, c.status as commodityStatus, c.code as commodityCode
+	</sql>
+	<sql id="vendor_column_list" >
+	  v.code as vendorCode, v.name as vendorName, v.purchase_type, v.settlement_type
+	</sql>
+	<sql id="price_scheme_column_list" >
+	  ps.id, ps.code, ps.name, ps.type, ps.status, ps.effective_time, ps.invalid_time
+	</sql>
+	<sql id="price_scheme_detail_column_list" >
+	  psd.id as detailId, psd.effective_programme_code, psd.sku_barcode as skuBarCode, psd.commodity_attribute_values, psd.sku_act_flag as act_flag, psd.points, psd.supply_price
+	</sql>
+	<sql id="sku_column_list" >
+	  sku.barcode as skuBarCode, sku.commodity_attribute_values, sku.act_flag
+	</sql>
+	<resultMap type="com.ffzx.stms.model.PriceScheme" id="PriceSchemeResultMap">
+	      <!-- 方案信息 -->
+          <result column="id" property="id"/>
+          <result column="code" property="code"/>
+          <result column="name" property="name"/>
+          <result column="type" property="type"/>
+          <result column="status" property="status"/>
+          <result column="effective_time" property="effectiveTime"/>
+          <result column="invalid_time" property="invalidTime"/>
+          <!-- 商品信息 -->
+          <result column="commodityBarCode" property="commodity.barCode"/>
+          <result column="commodityName" property="commodity.name"/>
+          <result column="commodityStatus" property="commodity.status"/>
+          <result column="commodityCode" property="commodity.code"/>
+          <!-- 供应商信息 -->
+          <result column="vendorCode" property="vendor.code"/>
+          <result column="vendorName" property="vendor.name"/>
+          <result column="purchase_type" property="vendor.purchaseType"/>
+          <result column="settlement_type" property="vendor.settlementType"/>
+      </resultMap>
+
+	<resultMap type="com.ffzx.stms.model.PriceScheme" id="PriceSchemeDetailResultMap" extends="PriceSchemeResultMap">
+		<!-- collection：对关联查询到多条记录映射到集合对象中 property：将关联查询到多条记录映射到PriceSchemeDetail哪个属性 
+			ofType：指定映射到list集合属性中pojo的类型 -->
+		<collection property="priceSchemeDetails"
+			ofType="com.ffzx.stms.model.PriceSchemeDetail">
+			<!-- id：订单明细唯 一标识 property:要将订单明细的唯 一标识 映射到PriceSchemeDetail的哪个属性 -->
+			<!-- sku信息 -->
+			<result column="skuBarCode" property="commoditySku.barcode" />
+			<result column="commodity_attribute_values" property="commoditySku.commodityAttributeValues" />
+			<result column="act_flag" property="commoditySku.actFlag" />
+			<!-- sku供货价/扣点信息 -->
+			<result column="detailId" property="id" />
+			<result column="effective_programme_code" property="effectiveProgrammeCode" />
+			<result column="points" property="points" />
+			<result column="supply_price" property="supplyPrice" />
+		</collection>
+	</resultMap>
+	<resultMap type="com.ffzx.stms.model.PriceScheme" id="PriceSchemeAndPriceSchemeDetailResultMap" extends="BaseResultMap">
+		<!-- collection：对关联查询到多条记录映射到集合对象中 property：将关联查询到多条记录映射到PriceSchemeDetail哪个属性 
+			ofType：指定映射到list集合属性中pojo的类型 -->
+		<collection property="priceSchemeDetails" ofType="com.ffzx.stms.model.PriceSchemeDetail">
+			<!-- id：订单明细唯 一标识 property:要将订单明细的唯 一标识 映射到PriceSchemeDetail的哪个属性 -->
+			<!-- sku供货价/扣点信息 -->
+		    <id column="id" property="id" jdbcType="VARCHAR" />
+		    <result column="effective_programme_code" property="effectiveProgrammeCode" jdbcType="VARCHAR" />
+		    <result column="sku_barcode" property="skuBarcode" jdbcType="VARCHAR" />
+		    <result column="commodity_attribute_values" property="commodityAttributeValues" jdbcType="VARCHAR" />
+		    <result column="sku_act_flag" property="skuActFlag" jdbcType="CHAR" />
+		    <result column="create_by" property="createBy.id" jdbcType="VARCHAR" />
+		    <result column="create_by_name" property="createBy.name" jdbcType="VARCHAR" />
+		    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		    <result column="last_update_by" property="lastUpdateBy.id" jdbcType="VARCHAR" />
+		    <result column="last_update_by_name" property="lastUpdateBy.name" jdbcType="VARCHAR" />
+		    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+		    <result column="act_flag" property="actFlag" jdbcType="CHAR" />
+		    <result column="points" property="points" jdbcType="DECIMAL" />
+		    <result column="supply_price" property="supplyPrice" jdbcType="DECIMAL" />
+<!--             <include refid="com.ffzx.stms.mapper.PriceSchemeDetailMapper.BaseResultMap" /> -->
+		</collection>
+	</resultMap>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	  delete from price_scheme
+	  where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteByPrimarayKeyForModel" parameterType="com.ffzx.stms.model.PriceScheme" >
+	  delete from price_scheme
+	  where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.ffzx.stms.model.PriceScheme" >
+	  insert into price_scheme (id, commodity_code, vendor_code, purchase_type, 
+	    settlement_pattern, type, code, 
+	    name, status, effective_time, 
+	    invalid_time, create_by, create_by_name, 
+	    create_date, last_update_by, last_update_by_name, 
+	    last_update_date, act_flag, del_flag
+	    )
+	  values (#{id,jdbcType=VARCHAR}, #{commodity.code,jdbcType=VARCHAR}, #{vendor.code,jdbcType=VARCHAR}, 
+	    #{purchaseType,jdbcType=CHAR}, #{settlementPattern,jdbcType=CHAR}, #{type,jdbcType=CHAR}, #{code,jdbcType=VARCHAR}, 
+	    #{name,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{effectiveTime,jdbcType=TIMESTAMP}, 
+	    #{invalidTime,jdbcType=TIMESTAMP}, #{createBy.id,jdbcType=VARCHAR}, #{createBy.name,jdbcType=VARCHAR}, 
+	    #{createDate,jdbcType=TIMESTAMP}, #{lastUpdateBy.id,jdbcType=VARCHAR}, #{lastUpdateBy.name,jdbcType=VARCHAR}, 
+	    #{lastUpdateDate,jdbcType=TIMESTAMP}, #{actFlag,jdbcType=CHAR}, #{delFlag,jdbcType=CHAR}
+	    )
+	</insert>
+	<insert id="insertSelective" parameterType="com.ffzx.stms.model.PriceScheme" >
+	  insert into price_scheme
+	  <trim prefix="(" suffix=")" suffixOverrides="," >
+	    <if test="id != null" >
+	      id,
+	    </if>
+	    <if test="commodity != null">
+	      <if test="commodity.code != null and '' != commodity.code">
+	        commodity_code,
+	      </if>
+	    </if>
+	    <if test="vendor != null" >
+	      vendor_code,
+	    </if>
+	    <if test="purchaseType != null" >
+	      purchase_type,
+	    </if>
+	    <if test="settlementPattern != null" >
+	      settlement_pattern,
+	    </if>
+	    <if test="type != null" >
+	      type,
+	    </if>
+	    <if test="code != null" >
+	      code,
+	    </if>
+	    <if test="name != null" >
+	      name,
+	    </if>
+	    <if test="status != null" >
+	      status,
+	    </if>
+	    <if test="effectiveTime != null" >
+	      effective_time,
+	    </if>
+	    <if test="invalidTime != null" >
+	      invalid_time,
+	    </if>
+	    <if test="createBy != null" >
+	      <if test="createBy.id != null and '' != createBy.id">
+	        create_by,
+	      </if>
+	      <if test="createBy.name != null and '' != createBy.name">
+	        create_by_name,
+	      </if>
+	    </if>
+	    <if test="createDate != null" >
+	      create_date,
+	    </if>
+	    <if test="lastUpdateBy != null" >
+	      <if test="lastUpdateBy.id != null and '' != lastUpdateBy.id">
+	          last_update_by,
+	      </if>
+	      <if test="lastUpdateBy.name != null and '' != lastUpdateBy.name">
+	          last_update_by_name,
+	      </if>
+	    </if>
+	    <if test="lastUpdateDate != null" >
+	      last_update_date,
+	    </if>
+	    <if test="actFlag != null" >
+	      act_flag,
+	    </if>
+	    <if test="delFlag != null" >
+	      del_flag,
+	    </if>
+	  </trim>
+	  <trim prefix="values (" suffix=")" suffixOverrides="," >
+	    <if test="id != null" >
+	      #{id,jdbcType=VARCHAR},
+	    </if>
+	    <if test="commodity != null">
+			<if test="commodity.code != null and '' != commodity.code">
+				#{commodity.code,jdbcType=VARCHAR},
+			</if>
+		</if>
+	    <if test="vendor != null" >
+	        <if test="vendor.code != null and '' != vendor.code">   
+	           #{vendor.code,jdbcType=VARCHAR},
+	        </if>   
+	    </if>
+	    <if test="purchaseType != null" >
+	      #{purchaseType,jdbcType=CHAR},
+	    </if>
+	    <if test="settlementPattern != null" >
+	      #{settlementPattern,jdbcType=CHAR},
+	    </if>
+	    <if test="type != null" >
+	      #{type,jdbcType=CHAR},
+	    </if>
+	    <if test="code != null" >
+	      #{code,jdbcType=VARCHAR},
+	    </if>
+	    <if test="name != null" >
+	      #{name,jdbcType=VARCHAR},
+	    </if>
+	    <if test="status != null" >
+	      #{status,jdbcType=CHAR},
+	    </if>
+	    <if test="effectiveTime != null" >
+	      #{effectiveTime,jdbcType=TIMESTAMP},
+	    </if>
+	    <if test="invalidTime != null" >
+	      #{invalidTime,jdbcType=TIMESTAMP},
+	    </if>
+	    <if test="createBy != null" >
+	      <if test="createBy.id != null and '' != createBy.id">
+	          #{createBy.id,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createBy.name != null and '' != createBy.name">
+	          #{createBy.name,jdbcType=VARCHAR},
+	      </if>
+	    </if>
+	    <if test="createDate != null" >
+	      #{createDate,jdbcType=TIMESTAMP},
+	    </if>
+	    <if test="lastUpdateBy != null" >
+	      <if test="lastUpdateBy.id != null and '' != lastUpdateBy.id">
+	          #{lastUpdateBy.id,jdbcType=VARCHAR},
+	      </if>
+	      <if test="lastUpdateBy.name != null and '' != lastUpdateBy.name">
+	          #{lastUpdateBy.name,jdbcType=VARCHAR},
+	      </if>
+	    </if>
+	    <if test="lastUpdateDate != null" >
+	      #{lastUpdateDate,jdbcType=TIMESTAMP},
+	    </if>
+	    <if test="actFlag != null" >
+	      #{actFlag,jdbcType=CHAR},
+	    </if>
+	    <if test="delFlag != null" >
+	      #{delFlag,jdbcType=CHAR},
+	    </if>
+	  </trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.ffzx.stms.model.PriceScheme">
+		update price_scheme
+		<set>
+	        <if test="commodity != null">
+				<if test="commodity.code != null and '' != commodity.code">
+					commodity_code = #{commodity.code,jdbcType=VARCHAR},
+				</if>
+			</if>
+			<if test="vendor != null">
+			    <if test="vendor.code != null and '' != vendor.code">
+				    vendor_code = #{vendor.code,jdbcType=VARCHAR},
+				</if>
+			</if>
+			<if test="purchaseType != null">
+				purchase_type = #{purchaseType,jdbcType=CHAR},
+			</if>
+			<if test="settlementPattern != null">
+				settlement_pattern = #{settlementPattern,jdbcType=CHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=CHAR},
+			</if>
+			<if test="code != null">
+				code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=CHAR},
+			</if>
+			<if test="effectiveTime != null">
+				effective_time = #{effectiveTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="invalidTime != null">
+				invalid_time = #{invalidTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createBy != null">
+			    <if test="createBy.id != null and '' != createBy.id">
+				    create_by = #{createBy.id,jdbcType=VARCHAR},
+				</if>
+				<if test="createBy.name != null and '' != createBy.name">
+                    create_by_name = #{createBy.name,jdbcType=VARCHAR},
+                </if>
+            </if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateBy != null">
+			    <if test="lastUpdateBy.id != null and '' != lastUpdateBy.id">
+				    last_update_by = #{lastUpdateBy.id,jdbcType=VARCHAR},
+				</if>
+				<if test="lastUpdateBy.name != null and '' != lastUpdateBy.name">
+                    last_update_by_name = #{lastUpdateBy.name,jdbcType=VARCHAR},
+                </if>
+			</if>
+			<if test="lastUpdateDate != null">
+				last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="cancelBy != null">
+                <if test="cancelBy.id != null and '' != cancelBy.id">
+                    cancel_by = #{cancelBy.id,jdbcType=VARCHAR},
+                </if>
+                <if test="cancelBy.name != null and '' != cancelBy.name">
+                    cancel_by_name = #{cancelBy.name,jdbcType=VARCHAR},
+                </if>
+            </if>
+            <if test="cancelDate != null">
+                cancel_date = #{cancelDate,jdbcType=TIMESTAMP},
+            </if>
+			<if test="actFlag != null">
+				act_flag = #{actFlag,jdbcType=CHAR},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag,jdbcType=CHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByCommodityCode" parameterType="com.ffzx.stms.model.PriceScheme">
+		update price_scheme
+		<set>
+			<if test="vendor != null">
+			    <if test="vendor.code != null and '' != vendor.code">
+				    vendor_code = #{vendor.code,jdbcType=VARCHAR},
+				</if>
+			</if>
+			<if test="settlementPattern != null">
+				settlement_pattern = #{settlementPattern,jdbcType=CHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=CHAR},
+			</if>
+			<if test="code != null">
+				code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=CHAR},
+			</if>
+			<if test="effectiveTime != null">
+				effective_time = #{effectiveTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="invalidTime != null">
+				invalid_time = #{invalidTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createBy != null">
+			    <if test="createBy.id != null and '' != createBy.id">
+				    create_by = #{createBy.id,jdbcType=VARCHAR},
+				</if>
+				<if test="createBy.name != null and '' != createBy.name">
+                    create_by_name = #{createBy.name,jdbcType=VARCHAR},
+                </if>
+            </if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpdateBy != null">
+			    <if test="lastUpdateBy.id != null and '' != lastUpdateBy.id">
+				    last_update_by = #{lastUpdateBy.id,jdbcType=VARCHAR},
+				</if>
+				<if test="lastUpdateBy.name != null and '' != lastUpdateBy.name">
+                    last_update_by_name = #{lastUpdateBy.name,jdbcType=VARCHAR},
+                </if>
+			</if>
+			<if test="lastUpdateDate != null">
+				last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="actFlag != null">
+				act_flag = #{actFlag,jdbcType=CHAR},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag,jdbcType=CHAR},
+			</if>
+		</set>
+		where commodity_code = #{commodity.code,jdbcType=VARCHAR} and status in ('INEFFECTIVE', 'ACTIVE')
+	</update>
+	<update id="updateByVendorCode" parameterType="com.ffzx.stms.model.PriceScheme">
+        update price_scheme
+        <set>
+            <if test="commodity != null">
+                <if test="commodity.code != null and '' != commodity.code">
+                    commodity_code = #{commodity.code,jdbcType=VARCHAR},
+                </if>
+            </if>
+            <if test="settlementPattern != null">
+                settlement_pattern = #{settlementPattern,jdbcType=CHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=CHAR},
+            </if>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=CHAR},
+            </if>
+            <if test="effectiveTime != null">
+                effective_time = #{effectiveTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="invalidTime != null">
+                invalid_time = #{invalidTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                <if test="createBy.id != null and '' != createBy.id">
+                    create_by = #{createBy.id,jdbcType=VARCHAR},
+                </if>
+                <if test="createBy.name != null and '' != createBy.name">
+                    create_by_name = #{createBy.name,jdbcType=VARCHAR},
+                </if>
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateBy != null">
+                <if test="lastUpdateBy.id != null and '' != lastUpdateBy.id">
+                    last_update_by = #{lastUpdateBy.id,jdbcType=VARCHAR},
+                </if>
+                <if test="lastUpdateBy.name != null and '' != lastUpdateBy.name">
+                    last_update_by_name = #{lastUpdateBy.name,jdbcType=VARCHAR},
+                </if>
+            </if>
+            <if test="lastUpdateDate != null">
+                last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="actFlag != null">
+                act_flag = #{actFlag,jdbcType=CHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=CHAR},
+            </if>
+        </set>
+        where vendor_code = #{vendor.code,jdbcType=VARCHAR} and status in ('INEFFECTIVE', 'ACTIVE')
+    </update>
+	<update id="updateByPrimaryKey" parameterType="com.ffzx.stms.model.PriceScheme" >
+	  update price_scheme
+	  set commodity_code = #{commodity.code,jdbcType=VARCHAR},
+	    vendor_code = #{vendor.code,jdbcType=VARCHAR},
+	    purchase_type = #{purchaseType,jdbcType=CHAR},
+	    settlement_pattern = #{settlementPattern,jdbcType=CHAR},
+	    type = #{type,jdbcType=CHAR},
+	    code = #{code,jdbcType=VARCHAR},
+	    name = #{name,jdbcType=VARCHAR},
+	    status = #{status,jdbcType=CHAR},
+	    effective_time = #{effectiveTime,jdbcType=TIMESTAMP},
+	    invalid_time = #{invalidTime,jdbcType=TIMESTAMP},
+	    create_by = #{createBy.id,jdbcType=VARCHAR},
+	    create_by_name = #{createBy.name,jdbcType=VARCHAR},
+	    create_date = #{createDate,jdbcType=TIMESTAMP},
+	    last_update_by = #{lastUpdateBy.id,jdbcType=VARCHAR},
+	    last_update_by_name = #{lastUpdateBy.name,jdbcType=VARCHAR},
+	    last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+	    act_flag = #{actFlag,jdbcType=CHAR},
+	    del_flag = #{delFlag,jdbcType=CHAR}
+	  where id = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

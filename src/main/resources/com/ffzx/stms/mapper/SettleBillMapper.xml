@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ffzx.stms.mapper.SettleBillMapper" >
+  <resultMap id="BaseResultMap" type="com.ffzx.stms.model.SettleBill" >
+    <id column="id" property="id" jdbcType="VARCHAR" /> 
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="pay_status" property="payStatus" jdbcType="VARCHAR" />
+    <result column="vendor_code" property="vendorCode" jdbcType="VARCHAR" />
+    <result column="vendor_name" property="vendorName" jdbcType="VARCHAR" />
+    <result column="pay_amount_sum" property="payAmountSum" jdbcType="DECIMAL" />
+    <result column="refund_amount_sum" property="refundAmountSum" jdbcType="DECIMAL" />
+    <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+    <result column="refund_amount" property="refundAmount" jdbcType="DECIMAL" />
+    <result column="cumulative_pay_amount" property="cumulativePayAmount" jdbcType="DECIMAL" />
+    <result column="remind_pay_amount" property="remindPayAmount" jdbcType="DECIMAL" />
+    <result column="last_pay_time" property="lastPayTime" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy.id" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_by" property="lastUpdateBy.id" jdbcType="VARCHAR" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+    <result column="commodity_total_amount" property="commodityTotalAmount" jdbcType="DECIMAL" />
+    <result column="supply_total_amount" property="supplyTotalAmount" jdbcType="DECIMAL" />
+    <result column="deduct_amount" property="deductAmount" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    t.id, t.code, t.pay_status, t.vendor_code, t.vendor_name, t.pay_amount_sum, t.refund_amount_sum, 
+    t.pay_amount, t.refund_amount, t.cumulative_pay_amount, t.remind_pay_amount, t.last_pay_time, 
+    t.create_by as 'createBy.id', t.create_date, t.last_update_by as 'lastUpdateBy.id', 
+    t.last_update_date, t.remarks, t.del_flag, t.commodity_total_amount, t.supply_total_amount, 
+    t.deduct_amount
+  </sql>
+  <sql id="condition" >
+    <if test="null!=params" >
+      <if test="params.id != null and '' != params.id" >
+        and t.id = #{params.id,jdbcType=VARCHAR}
+      </if>
+      <if test="params.code != null and '' != params.code" >
+        and t.code = #{params.code,jdbcType=VARCHAR}
+      </if>
+      <if test="params.payStatus != null and '' != params.payStatus" >
+        and t.pay_status = #{params.payStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="params.vendorCode != null and '' != params.vendorCode" >
+        and t.vendor_code = #{params.vendorCode,jdbcType=VARCHAR}
+      </if>
+      <if test="params.vendorName != null and '' != params.vendorName" >
+        and t.vendor_name = #{params.vendorName,jdbcType=VARCHAR}
+      </if>
+      <if test="params.payAmountSum != null" >
+        and t.pay_amount_sum = #{params.payAmountSum,jdbcType=DECIMAL}
+      </if>
+      
+      <if test="params.smapayAmount != null and '' != params.smapayAmount" >
+	      <![CDATA[
+	      AND t.pay_amount >= #{params.smapayAmount,jdbcType=DECIMAL}
+	      ]]>
+      </if>
+      <if test="params.maxpayAmount != null and '' != params.maxpayAmount" >
+	     <![CDATA[
+	     AND t.pay_amount <= #{params.maxpayAmount,jdbcType=DECIMAL}
+	     ]]>
+      </if>
+      
+      <if test="params.refundAmountSum != null" >
+        and t.refund_amount_sum = #{params.refundAmountSum,jdbcType=DECIMAL}
+      </if>
+      <if test="params.payAmount != null" >
+        and t.pay_amount = #{params.payAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="params.refundAmount != null" >
+        and t.refund_amount = #{params.refundAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="params.cumulativePayAmount != null" >
+        and t.cumulative_pay_amount = #{params.cumulativePayAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="params.remindPayAmount != null" >
+        and t.remind_pay_amount = #{params.remindPayAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="params.lastPayTime != null" >
+        and t.last_pay_time = #{params.lastPayTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.createBy != null and '' != params.createBy" >
+        and t.create_by = #{params.createBy.id,jdbcType=VARCHAR}
+      </if>
+      <if test="params.createDate != null" >
+        and t.create_date = #{params.createDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.lastUpdateBy != null and '' != params.lastUpdateBy" >
+        and t.last_update_by = #{params.lastUpdateBy.id,jdbcType=VARCHAR}
+      </if>
+      <if test="params.lastUpdateDate != null" >
+        and t.last_update_date = #{params.lastUpdateDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.remarks != null and '' != params.remarks" >
+        and t.remarks = #{params.remarks,jdbcType=VARCHAR}
+      </if>
+      <if test="params.delFlag != null and '' != params.delFlag" >
+        and t.del_flag = #{params.delFlag,jdbcType=CHAR}
+      </if>
+      <if test="params.settles!=null">
+      	and t.code  in 
+      	
+      	<foreach collection="params.settles" item="bno" index="index"
+            open="(" close=")" separator=",">
+            #{bno}
+        </foreach>
+      </if>
+       <if test="params.billNo != null and '' != params.billNo" >
+      	  and t.code in (select invoice_num from bill where bill_no =#{params.billNo,jdbcType=VARCHAR})
+      </if>
+      <if test="params.commodityTotalAmount != null" >
+        and t.commodity_total_amount = #{params.commodityTotalAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="params.supplyTotalAmount != null" >
+        and t.supply_total_amount = #{params.supplyTotalAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="params.deductAmount != null" >
+        and t.deduct_amount = #{params.deductAmount,jdbcType=DECIMAL}
+      </if>
+    </if>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from settle_bill t 
+    where t.id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from settle_bill t 
+    where 1=1
+    <include refid="condition" />
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" >
+    select count(1) as s from settle_bill t  where 1=1
+    <include refid="condition" />
+  </select>
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from settle_bill t 
+    where 1=1
+    <include refid="condition" />
+    <if test="orderByField != null and ''!=orderByField" >
+      order by t.${orderByField} 
+      <if test="orderByField" >
+        ${orderBy}
+      </if>
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from settle_bill
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByPrimarayKeyForModel" parameterType="com.ffzx.stms.model.SettleBill" >
+    delete from settle_bill
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ffzx.stms.model.SettleBill" >
+    insert into settle_bill (id, code, pay_status, 
+      vendor_code, vendor_name, pay_amount_sum, 
+      refund_amount_sum, pay_amount, refund_amount, 
+      cumulative_pay_amount, remind_pay_amount, last_pay_time, 
+      create_by, create_date, last_update_by, 
+      last_update_date, remarks, del_flag, 
+      commodity_total_amount, supply_total_amount, 
+      deduct_amount
+      )
+    values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{payStatus,jdbcType=VARCHAR}, 
+      #{vendorCode,jdbcType=VARCHAR}, #{vendorName,jdbcType=VARCHAR}, #{payAmountSum,jdbcType=DECIMAL}, 
+      #{refundAmountSum,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL}, #{refundAmount,jdbcType=DECIMAL}, 
+      #{cumulativePayAmount,jdbcType=DECIMAL}, #{remindPayAmount,jdbcType=DECIMAL}, #{lastPayTime,jdbcType=TIMESTAMP}, 
+      #{createBy.id,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{lastUpdateBy.id,jdbcType=VARCHAR}, 
+      #{lastUpdateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}, 
+      #{commodityTotalAmount,jdbcType=DECIMAL}, #{supplyTotalAmount,jdbcType=DECIMAL}, 
+      #{deductAmount,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ffzx.stms.model.SettleBill" >
+    insert into settle_bill
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="payStatus != null" >
+        pay_status,
+      </if>
+      <if test="vendorCode != null" >
+        vendor_code,
+      </if>
+      <if test="vendorName != null" >
+        vendor_name,
+      </if>
+      <if test="payAmountSum != null" >
+        pay_amount_sum,
+      </if>
+      <if test="refundAmountSum != null" >
+        refund_amount_sum,
+      </if>
+      <if test="payAmount != null" >
+        pay_amount,
+      </if>
+      <if test="refundAmount != null" >
+        refund_amount,
+      </if>
+      <if test="cumulativePayAmount != null" >
+        cumulative_pay_amount,
+      </if>
+      <if test="remindPayAmount != null" >
+        remind_pay_amount,
+      </if>
+      <if test="lastPayTime != null" >
+        last_pay_time,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if> 
+      <if test="commodityTotalAmount != null" >
+        commodity_total_amount,
+      </if>
+      <if test="supplyTotalAmount != null" >
+        supply_total_amount,
+      </if>
+      <if test="deductAmount != null" >
+        deduct_amount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="payStatus != null" >
+        #{payStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="vendorCode != null" >
+        #{vendorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="vendorName != null" >
+        #{vendorName,jdbcType=VARCHAR},
+      </if>
+      <if test="payAmountSum != null" >
+        #{payAmountSum,jdbcType=DECIMAL},
+      </if>
+      <if test="refundAmountSum != null" >
+        #{refundAmountSum,jdbcType=DECIMAL},
+      </if>
+      <if test="payAmount != null" >
+        #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="refundAmount != null" >
+        #{refundAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="cumulativePayAmount != null" >
+        #{cumulativePayAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="remindPayAmount != null" >
+        #{remindPayAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="lastPayTime != null" >
+        #{lastPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        #{lastUpdateBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="commodityTotalAmount != null" >
+        #{commodityTotalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="supplyTotalAmount != null" >
+        #{supplyTotalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="deductAmount != null" >
+        #{deductAmount,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ffzx.stms.model.SettleBill" >
+    update settle_bill
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="payStatus != null" >
+        pay_status = #{payStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="vendorCode != null" >
+        vendor_code = #{vendorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="vendorName != null" >
+        vendor_name = #{vendorName,jdbcType=VARCHAR},
+      </if>
+      <if test="payAmountSum != null" >
+        pay_amount_sum = #{payAmountSum,jdbcType=DECIMAL},
+      </if>
+      <if test="refundAmountSum != null" >
+        refund_amount_sum = #{refundAmountSum,jdbcType=DECIMAL},
+      </if>
+      <if test="payAmount != null" >
+        pay_amount = #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="refundAmount != null" >
+        refund_amount = #{refundAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="cumulativePayAmount != null" >
+        cumulative_pay_amount = #{cumulativePayAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="remindPayAmount != null" >
+        remind_pay_amount = #{remindPayAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="lastPayTime != null" >
+        last_pay_time = #{lastPayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by = #{lastUpdateBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="commodityTotalAmount != null" >
+        commodity_total_amount = #{commodityTotalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="supplyTotalAmount != null" >
+        supply_total_amount = #{supplyTotalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="deductAmount != null" >
+        deduct_amount = #{deductAmount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ffzx.stms.model.SettleBill" >
+    update settle_bill
+    set code = #{code,jdbcType=VARCHAR},
+      pay_status = #{payStatus,jdbcType=VARCHAR},
+      vendor_code = #{vendorCode,jdbcType=VARCHAR},
+      vendor_name = #{vendorName,jdbcType=VARCHAR},
+      pay_amount_sum = #{payAmountSum,jdbcType=DECIMAL},
+      refund_amount_sum = #{refundAmountSum,jdbcType=DECIMAL},
+      pay_amount = #{payAmount,jdbcType=DECIMAL},
+      refund_amount = #{refundAmount,jdbcType=DECIMAL},
+      cumulative_pay_amount = #{cumulativePayAmount,jdbcType=DECIMAL},
+      remind_pay_amount = #{remindPayAmount,jdbcType=DECIMAL},
+      last_pay_time = #{lastPayTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy.id,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      last_update_by = #{lastUpdateBy.id,jdbcType=VARCHAR},
+      last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR},
+      commodity_total_amount = #{commodityTotalAmount,jdbcType=DECIMAL},
+      supply_total_amount = #{supplyTotalAmount,jdbcType=DECIMAL},
+      deduct_amount = #{deductAmount,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

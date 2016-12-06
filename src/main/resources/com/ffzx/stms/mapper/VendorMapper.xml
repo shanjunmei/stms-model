@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ffzx.stms.mapper.VendorMapper" >
+  <resultMap id="BaseResultMap" type="com.ffzx.stms.model.Vendor" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="act_flag" property="actFlag" jdbcType="CHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="company_tel" property="companyTel" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="company_email" property="companyEmail" jdbcType="VARCHAR" />
+    <result column="company_fax" property="companyFax" jdbcType="VARCHAR" />
+    <result column="company_nature" property="companyNature" jdbcType="CHAR" />
+    <result column="contact_name" property="contactName" jdbcType="VARCHAR" />
+    <result column="contact_post" property="contactPost" jdbcType="VARCHAR" />
+    <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
+    <result column="contact_cert_type" property="contactCertType" jdbcType="CHAR" />
+    <result column="contact_cert_no" property="contactCertNo" jdbcType="VARCHAR" />
+    <result column="invoice_type" property="invoiceType" jdbcType="CHAR" />
+    <result column="tax_rate" property="taxRate" jdbcType="DECIMAL" />
+    <result column="pay_terms" property="payTerms" jdbcType="CHAR" />
+    <result column="bank_account" property="bankAccount" jdbcType="VARCHAR" />
+    <result column="bank_account_no" property="bankAccountNo" jdbcType="VARCHAR" />
+    <result column="bank_account_name" property="bankAccountName" jdbcType="VARCHAR" />
+    <result column="alipay_no" property="alipayNo" jdbcType="VARCHAR" />
+    <result column="wechat_no" property="wechatNo" jdbcType="VARCHAR" />
+    <result column="purchase_type" property="purchaseType" jdbcType="CHAR" />
+    <result column="create_by" property="createBy.id" jdbcType="VARCHAR" />
+    <result column="create_by_name" property="createByName" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_by" property="lastUpdateBy.id" jdbcType="VARCHAR" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="pay_type" property="payType" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+    <result column="settlement_type" property="settlementType" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    t.id, t.code, t.act_flag, t.name, t.company_tel, t.address, t.company_name, t.company_email, 
+    t.company_fax, t.company_nature, t.contact_name, t.contact_post, t.contact_phone, 
+    t.contact_cert_type, t.contact_cert_no, t.invoice_type, t.tax_rate, t.pay_terms, 
+    t.bank_account, t.bank_account_no, t.bank_account_name, t.alipay_no, t.wechat_no, 
+    t.purchase_type, t.create_by as 'createBy.id', t.create_by_name as 'createBy.name', 
+    t.create_date, t.last_update_by as 'lastUpdateBy.id', t.last_update_date, t.pay_type, 
+    t.del_flag, t.settlement_type
+  </sql>
+  <sql id="condition" >
+    <if test="null!=params" >
+      <if test="params.id != null and '' != params.id" >
+        and t.id = #{params.id,jdbcType=VARCHAR}
+      </if>
+      <if test="params.code != null and '' != params.code" >
+        and t.code = #{params.code,jdbcType=VARCHAR}
+      </if>
+      <if test="params.actFlag != null and '' != params.actFlag" >
+        and t.act_flag = #{params.actFlag,jdbcType=CHAR}
+      </if>
+      <if test="params.name != null and '' != params.name" >
+        and t.name = #{params.name,jdbcType=VARCHAR}
+      </if>
+      <if test="params.companyTel != null and '' != params.companyTel" >
+        and t.company_tel = #{params.companyTel,jdbcType=VARCHAR}
+      </if>
+      <if test="params.address != null and '' != params.address" >
+        and t.address = #{params.address,jdbcType=VARCHAR}
+      </if>
+      <if test="params.companyName != null and '' != params.companyName" >
+        and t.company_name = #{params.companyName,jdbcType=VARCHAR}
+      </if>
+      <if test="params.companyEmail != null and '' != params.companyEmail" >
+        and t.company_email = #{params.companyEmail,jdbcType=VARCHAR}
+      </if>
+      <if test="params.companyFax != null and '' != params.companyFax" >
+        and t.company_fax = #{params.companyFax,jdbcType=VARCHAR}
+      </if>
+      <if test="params.companyNature != null and '' != params.companyNature" >
+        and t.company_nature = #{params.companyNature,jdbcType=CHAR}
+      </if>
+      <if test="params.contactName != null and '' != params.contactName" >
+        and t.contact_name = #{params.contactName,jdbcType=VARCHAR}
+      </if>
+      <if test="params.contactPost != null and '' != params.contactPost" >
+        and t.contact_post = #{params.contactPost,jdbcType=VARCHAR}
+      </if>
+      <if test="params.contactPhone != null and '' != params.contactPhone" >
+        and t.contact_phone = #{params.contactPhone,jdbcType=VARCHAR}
+      </if>
+      <if test="params.contactCertType != null and '' != params.contactCertType" >
+        and t.contact_cert_type = #{params.contactCertType,jdbcType=CHAR}
+      </if>
+      <if test="params.contactCertNo != null and '' != params.contactCertNo" >
+        and t.contact_cert_no = #{params.contactCertNo,jdbcType=VARCHAR}
+      </if>
+      <if test="params.invoiceType != null and '' != params.invoiceType" >
+        and t.invoice_type = #{params.invoiceType,jdbcType=CHAR}
+      </if>
+      <if test="params.taxRate != null" >
+        and t.tax_rate = #{params.taxRate,jdbcType=DECIMAL}
+      </if>
+      <if test="params.payTerms != null and '' != params.payTerms" >
+        and t.pay_terms = #{params.payTerms,jdbcType=CHAR}
+      </if>
+      <if test="params.bankAccount != null and '' != params.bankAccount" >
+        and t.bank_account = #{params.bankAccount,jdbcType=VARCHAR}
+      </if>
+      <if test="params.bankAccountNo != null and '' != params.bankAccountNo" >
+        and t.bank_account_no = #{params.bankAccountNo,jdbcType=VARCHAR}
+      </if>
+      <if test="params.bankAccountName != null and '' != params.bankAccountName" >
+        and t.bank_account_name = #{params.bankAccountName,jdbcType=VARCHAR}
+      </if>
+      <if test="params.alipayNo != null and '' != params.alipayNo" >
+        and t.alipay_no = #{params.alipayNo,jdbcType=VARCHAR}
+      </if>
+      <if test="params.wechatNo != null and '' != params.wechatNo" >
+        and t.wechat_no = #{params.wechatNo,jdbcType=VARCHAR}
+      </if>
+      <if test="params.purchaseType != null and '' != params.purchaseType" >
+        and t.purchase_type = #{params.purchaseType,jdbcType=CHAR}
+      </if>
+      <if test="params.createBy != null and '' != params.createBy" >
+        and t.create_by = #{params.createBy.id,jdbcType=VARCHAR}
+      </if>
+      <if test="params.createByName != null and '' != params.createByName" >
+        and t.create_by_name = #{params.createBy.idName,jdbcType=VARCHAR}
+      </if>
+      <if test="params.createDate != null" >
+        and t.create_date = #{params.createDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.lastUpdateBy != null and '' != params.lastUpdateBy" >
+        and t.last_update_by = #{params.lastUpdateBy.id,jdbcType=VARCHAR}
+      </if>
+      <if test="params.lastUpdateDate != null" >
+        and t.last_update_date = #{params.lastUpdateDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.payType != null and '' != params.payType" >
+        and t.pay_type = #{params.payType,jdbcType=VARCHAR}
+      </if>
+      <if test="params.delFlag != null and '' != params.delFlag" >
+        and t.del_flag = #{params.delFlag,jdbcType=CHAR}
+      </if>
+      <if test="params.settlementType != null and '' != params.settlementType" >
+        and t.settlement_type = #{params.settlementType,jdbcType=CHAR}
+      </if>
+    </if>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from uc_db.vendor t 
+    where t.id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from uc_db.vendor t 
+    where 1=1
+    <include refid="condition" />
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" >
+    select count(1) as s from uc_db.vendor t  where 1=1
+    <include refid="condition" />
+  </select>
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from uc_db.vendor t 
+    where 1=1
+    <include refid="condition" />
+    <if test="orderByField != null and ''!=orderByField" >
+      order by t.${orderByField} 
+      <if test="orderByField" >
+        ${orderBy}
+      </if>
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from uc_db.vendor
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByPrimarayKeyForModel" parameterType="com.ffzx.stms.model.Vendor" >
+    delete from uc_db.vendor
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ffzx.stms.model.Vendor" >
+    insert into uc_db.vendor (id, code, act_flag, 
+      name, company_tel, address, 
+      company_name, company_email, company_fax, 
+      company_nature, contact_name, contact_post, 
+      contact_phone, contact_cert_type, contact_cert_no, 
+      invoice_type, tax_rate, pay_terms, 
+      bank_account, bank_account_no, bank_account_name, 
+      alipay_no, wechat_no, purchase_type, 
+      create_by, create_by_name, create_date, 
+      last_update_by, last_update_date, pay_type, 
+      del_flag, settlement_type)
+    values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{actFlag,jdbcType=CHAR}, 
+      #{name,jdbcType=VARCHAR}, #{companyTel,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{companyName,jdbcType=VARCHAR}, #{companyEmail,jdbcType=VARCHAR}, #{companyFax,jdbcType=VARCHAR}, 
+      #{companyNature,jdbcType=CHAR}, #{contactName,jdbcType=VARCHAR}, #{contactPost,jdbcType=VARCHAR}, 
+      #{contactPhone,jdbcType=VARCHAR}, #{contactCertType,jdbcType=CHAR}, #{contactCertNo,jdbcType=VARCHAR}, 
+      #{invoiceType,jdbcType=CHAR}, #{taxRate,jdbcType=DECIMAL}, #{payTerms,jdbcType=CHAR}, 
+      #{bankAccount,jdbcType=VARCHAR}, #{bankAccountNo,jdbcType=VARCHAR}, #{bankAccountName,jdbcType=VARCHAR}, 
+      #{alipayNo,jdbcType=VARCHAR}, #{wechatNo,jdbcType=VARCHAR}, #{purchaseType,jdbcType=CHAR}, 
+      #{createBy.id,jdbcType=VARCHAR}, #{createBy.idName,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{lastUpdateBy.id,jdbcType=VARCHAR}, #{lastUpdateDate,jdbcType=TIMESTAMP}, #{payType,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=CHAR}, #{settlementType,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ffzx.stms.model.Vendor" >
+    insert into uc_db.vendor
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="actFlag != null" >
+        act_flag,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="companyTel != null" >
+        company_tel,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="companyName != null" >
+        company_name,
+      </if>
+      <if test="companyEmail != null" >
+        company_email,
+      </if>
+      <if test="companyFax != null" >
+        company_fax,
+      </if>
+      <if test="companyNature != null" >
+        company_nature,
+      </if>
+      <if test="contactName != null" >
+        contact_name,
+      </if>
+      <if test="contactPost != null" >
+        contact_post,
+      </if>
+      <if test="contactPhone != null" >
+        contact_phone,
+      </if>
+      <if test="contactCertType != null" >
+        contact_cert_type,
+      </if>
+      <if test="contactCertNo != null" >
+        contact_cert_no,
+      </if>
+      <if test="invoiceType != null" >
+        invoice_type,
+      </if>
+      <if test="taxRate != null" >
+        tax_rate,
+      </if>
+      <if test="payTerms != null" >
+        pay_terms,
+      </if>
+      <if test="bankAccount != null" >
+        bank_account,
+      </if>
+      <if test="bankAccountNo != null" >
+        bank_account_no,
+      </if>
+      <if test="bankAccountName != null" >
+        bank_account_name,
+      </if>
+      <if test="alipayNo != null" >
+        alipay_no,
+      </if>
+      <if test="wechatNo != null" >
+        wechat_no,
+      </if>
+      <if test="purchaseType != null" >
+        purchase_type,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createByName != null" >
+        create_by_name,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+      <if test="payType != null" >
+        pay_type,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+      <if test="settlementType != null" >
+        settlement_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="actFlag != null" >
+        #{actFlag,jdbcType=CHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="companyTel != null" >
+        #{companyTel,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyEmail != null" >
+        #{companyEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="companyFax != null" >
+        #{companyFax,jdbcType=VARCHAR},
+      </if>
+      <if test="companyNature != null" >
+        #{companyNature,jdbcType=CHAR},
+      </if>
+      <if test="contactName != null" >
+        #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPost != null" >
+        #{contactPost,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null" >
+        #{contactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="contactCertType != null" >
+        #{contactCertType,jdbcType=CHAR},
+      </if>
+      <if test="contactCertNo != null" >
+        #{contactCertNo,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceType != null" >
+        #{invoiceType,jdbcType=CHAR},
+      </if>
+      <if test="taxRate != null" >
+        #{taxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="payTerms != null" >
+        #{payTerms,jdbcType=CHAR},
+      </if>
+      <if test="bankAccount != null" >
+        #{bankAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAccountNo != null" >
+        #{bankAccountNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAccountName != null" >
+        #{bankAccountName,jdbcType=VARCHAR},
+      </if>
+      <if test="alipayNo != null" >
+        #{alipayNo,jdbcType=VARCHAR},
+      </if>
+      <if test="wechatNo != null" >
+        #{wechatNo,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseType != null" >
+        #{purchaseType,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="createByName != null" >
+        #{createBy.idName,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        #{lastUpdateBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="settlementType != null" >
+        #{settlementType,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ffzx.stms.model.Vendor" >
+    update uc_db.vendor
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="actFlag != null" >
+        act_flag = #{actFlag,jdbcType=CHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="companyTel != null" >
+        company_tel = #{companyTel,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null" >
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyEmail != null" >
+        company_email = #{companyEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="companyFax != null" >
+        company_fax = #{companyFax,jdbcType=VARCHAR},
+      </if>
+      <if test="companyNature != null" >
+        company_nature = #{companyNature,jdbcType=CHAR},
+      </if>
+      <if test="contactName != null" >
+        contact_name = #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPost != null" >
+        contact_post = #{contactPost,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null" >
+        contact_phone = #{contactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="contactCertType != null" >
+        contact_cert_type = #{contactCertType,jdbcType=CHAR},
+      </if>
+      <if test="contactCertNo != null" >
+        contact_cert_no = #{contactCertNo,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceType != null" >
+        invoice_type = #{invoiceType,jdbcType=CHAR},
+      </if>
+      <if test="taxRate != null" >
+        tax_rate = #{taxRate,jdbcType=DECIMAL},
+      </if>
+      <if test="payTerms != null" >
+        pay_terms = #{payTerms,jdbcType=CHAR},
+      </if>
+      <if test="bankAccount != null" >
+        bank_account = #{bankAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAccountNo != null" >
+        bank_account_no = #{bankAccountNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAccountName != null" >
+        bank_account_name = #{bankAccountName,jdbcType=VARCHAR},
+      </if>
+      <if test="alipayNo != null" >
+        alipay_no = #{alipayNo,jdbcType=VARCHAR},
+      </if>
+      <if test="wechatNo != null" >
+        wechat_no = #{wechatNo,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseType != null" >
+        purchase_type = #{purchaseType,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="createByName != null" >
+        create_by_name = #{createBy.idName,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by = #{lastUpdateBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="settlementType != null" >
+        settlement_type = #{settlementType,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ffzx.stms.model.Vendor" >
+    update uc_db.vendor
+    set code = #{code,jdbcType=VARCHAR},
+      act_flag = #{actFlag,jdbcType=CHAR},
+      name = #{name,jdbcType=VARCHAR},
+      company_tel = #{companyTel,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      company_email = #{companyEmail,jdbcType=VARCHAR},
+      company_fax = #{companyFax,jdbcType=VARCHAR},
+      company_nature = #{companyNature,jdbcType=CHAR},
+      contact_name = #{contactName,jdbcType=VARCHAR},
+      contact_post = #{contactPost,jdbcType=VARCHAR},
+      contact_phone = #{contactPhone,jdbcType=VARCHAR},
+      contact_cert_type = #{contactCertType,jdbcType=CHAR},
+      contact_cert_no = #{contactCertNo,jdbcType=VARCHAR},
+      invoice_type = #{invoiceType,jdbcType=CHAR},
+      tax_rate = #{taxRate,jdbcType=DECIMAL},
+      pay_terms = #{payTerms,jdbcType=CHAR},
+      bank_account = #{bankAccount,jdbcType=VARCHAR},
+      bank_account_no = #{bankAccountNo,jdbcType=VARCHAR},
+      bank_account_name = #{bankAccountName,jdbcType=VARCHAR},
+      alipay_no = #{alipayNo,jdbcType=VARCHAR},
+      wechat_no = #{wechatNo,jdbcType=VARCHAR},
+      purchase_type = #{purchaseType,jdbcType=CHAR},
+      create_by = #{createBy.id,jdbcType=VARCHAR},
+      create_by_name = #{createBy.idName,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      last_update_by = #{lastUpdateBy.id,jdbcType=VARCHAR},
+      last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      pay_type = #{payType,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR},
+      settlement_type = #{settlementType,jdbcType=CHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

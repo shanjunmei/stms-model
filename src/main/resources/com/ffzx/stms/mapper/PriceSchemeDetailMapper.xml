@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ffzx.stms.mapper.PriceSchemeDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.ffzx.stms.model.PriceSchemeDetail" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="effective_programme_code" property="effectiveProgrammeCode" jdbcType="VARCHAR" />
+    <result column="sku_barcode" property="skuBarcode" jdbcType="VARCHAR" />
+    <result column="commodity_attribute_values" property="commodityAttributeValues" jdbcType="VARCHAR" />
+    <result column="sku_act_flag" property="skuActFlag" jdbcType="CHAR" />
+    <result column="create_by" property="createBy.id" jdbcType="VARCHAR" />
+    <result column="create_by_name" property="createBy.name" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_by" property="lastUpdateBy.id" jdbcType="VARCHAR" />
+    <result column="last_update_by_name" property="lastUpdateBy.name" jdbcType="VARCHAR" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="act_flag" property="actFlag" jdbcType="CHAR" />
+    <result column="points" property="points" jdbcType="DECIMAL" />
+    <result column="supply_price" property="supplyPrice" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" > 
+    t.id, t.effective_programme_code, t.sku_barcode, t.commodity_attribute_values, t.sku_act_flag, 
+    t.create_by as 'createBy.id', t.create_by_name as 'createBy.name', t.create_date, t.last_update_by as 'lastUpdateBy.id', 
+    t.last_update_by_name as 'lastUpdateBy.name', t.last_update_date, t.act_flag, t.points, 
+    t.supply_price
+  </sql>
+  <sql id="condition" >
+    <if test="null!=params" >
+      <if test="params.id != null and '' != params.id" >
+        and t.id = #{params.id,jdbcType=VARCHAR}
+      </if>
+      <if test="params.effectiveProgrammeCode != null and '' != params.effectiveProgrammeCode" >
+        and t.effective_programme_code = #{params.effectiveProgrammeCode,jdbcType=VARCHAR}
+      </if>
+      <if test="params.skuBarcode != null and '' != params.skuBarcode" >
+        and t.sku_barcode = #{params.skuBarcode,jdbcType=VARCHAR}
+      </if>
+      <if test="params.commodityAttributeValues != null and '' != params.commodityAttributeValues" >
+        and t.commodity_attribute_values = #{params.commodityAttributeValues,jdbcType=VARCHAR}
+      </if>
+      <if test="params.skuActFlag != null and '' != params.skuActFlag" >
+        and t.sku_act_flag = #{params.skuActFlag,jdbcType=CHAR}
+      </if>
+      <if test="params.createBy != null and '' != params.createBy" >
+        and t.create_by = #{params.createBy.id,jdbcType=VARCHAR}
+      </if>
+      <if test="params.createByName != null and '' != params.createByName" >
+        and t.create_by_name = #{params.createBy.name,jdbcType=VARCHAR}
+      </if>
+      <if test="params.createDate != null" >
+        and t.create_date = #{params.createDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.lastUpdateBy != null and '' != params.lastUpdateBy" >
+        and t.last_update_by = #{params.lastUpdateBy.id,jdbcType=VARCHAR}
+      </if>
+      <if test="params.lastUpdateByName != null and '' != params.lastUpdateByName" >
+        and t.last_update_by_name = #{params.lastUpdateBy.name,jdbcType=VARCHAR}
+      </if>
+      <if test="params.lastUpdateDate != null" >
+        and t.last_update_date = #{params.lastUpdateDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.actFlag != null and '' != params.actFlag" >
+        and t.act_flag = #{params.actFlag,jdbcType=CHAR}
+      </if>
+      <if test="params.points != null" >
+        and t.points = #{params.points,jdbcType=DECIMAL}
+      </if>
+      <if test="params.supplyPrice != null" >
+        and t.supply_price = #{params.supplyPrice,jdbcType=DECIMAL}
+      </if>
+    </if>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from price_scheme_detail t 
+    where t.id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from price_scheme_detail t 
+    where 1=1
+    <include refid="condition" />
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" >
+    select count(1) as s from price_scheme_detail t  where 1=1
+    <include refid="condition" />
+  </select>
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from price_scheme_detail t 
+    where 1=1
+    <include refid="condition" />
+    <if test="orderByField != null and ''!=orderByField" >
+      order by t.${orderByField} 
+      <if test="orderByField" >
+        ${orderBy}
+      </if>
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from price_scheme_detail
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByPrimarayKeyForModel" parameterType="com.ffzx.stms.model.PriceSchemeDetail" >
+    delete from price_scheme_detail
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ffzx.stms.model.PriceSchemeDetail" >
+    insert into price_scheme_detail (id, effective_programme_code, sku_barcode, 
+      commodity_attribute_values, sku_act_flag, create_by, 
+      create_by_name, create_date, last_update_by, 
+      last_update_by_name, last_update_date, 
+      act_flag, points, supply_price
+      )
+    values (#{id,jdbcType=VARCHAR}, #{effectiveProgrammeCode,jdbcType=VARCHAR}, #{skuBarcode,jdbcType=VARCHAR}, 
+      #{commodityAttributeValues,jdbcType=VARCHAR}, #{skuActFlag,jdbcType=CHAR}, #{createBy.id,jdbcType=VARCHAR}, 
+      #{createBy.name,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{lastUpdateBy.id,jdbcType=VARCHAR}, 
+      #{lastUpdateBy.name,jdbcType=VARCHAR}, #{lastUpdateDate,jdbcType=TIMESTAMP}, 
+      #{actFlag,jdbcType=CHAR}, #{points,jdbcType=DECIMAL}, #{supplyPrice,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertBatch" parameterType="java.util.List">
+	insert into price_scheme_detail 
+	(
+		id, 
+		effective_programme_code,
+		sku_barcode,
+		commodity_attribute_values, 
+		sku_act_flag, 
+		create_by,
+		create_by_name, 
+		create_date, 
+		last_update_by,
+		last_update_by_name,
+		last_update_date,
+		act_flag, 
+		points, 
+		supply_price
+	)
+	values
+	<foreach collection="list" item="obj" index="index" separator=",">
+		(
+		#{obj.id,jdbcType=VARCHAR}, 
+		#{obj.effectiveProgrammeCode,jdbcType=VARCHAR},
+		#{obj.commoditySku.barcode,jdbcType=VARCHAR},
+		#{obj.commoditySku.commodityAttributeValues,jdbcType=VARCHAR},
+		#{obj.commoditySku.actFlag,jdbcType=CHAR}, 
+		#{obj.createBy.id,jdbcType=VARCHAR},
+		#{obj.createBy.name,jdbcType=VARCHAR}, 
+		#{obj.createDate,jdbcType=TIMESTAMP},
+		#{obj.lastUpdateBy.id,jdbcType=VARCHAR},
+		#{obj.lastUpdateBy.name,jdbcType=VARCHAR},
+		#{obj.lastUpdateDate,jdbcType=TIMESTAMP},
+		#{obj.actFlag,jdbcType=CHAR},
+		#{obj.points,jdbcType=DECIMAL}, 
+		#{obj.supplyPrice,jdbcType=DECIMAL}
+		)
+	</foreach>
+    </insert>
+  <insert id="insertSelective" parameterType="com.ffzx.stms.model.PriceSchemeDetail" >
+    insert into price_scheme_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="effectiveProgrammeCode != null" >
+        effective_programme_code,
+      </if>
+      <if test="skuBarcode != null" >
+        sku_barcode,
+      </if>
+      <if test="commodityAttributeValues != null" >
+        commodity_attribute_values,
+      </if>
+      <if test="skuActFlag != null" >
+        sku_act_flag,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createByName != null" >
+        create_by_name,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by,
+      </if>
+      <if test="lastUpdateByName != null" >
+        last_update_by_name,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+      <if test="actFlag != null" >
+        act_flag,
+      </if>
+      <if test="points != null" >
+        points,
+      </if>
+      <if test="supplyPrice != null" >
+        supply_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="effectiveProgrammeCode != null" >
+        #{effectiveProgrammeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="skuBarcode != null" >
+        #{skuBarcode,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityAttributeValues != null" >
+        #{commodityAttributeValues,jdbcType=VARCHAR},
+      </if>
+      <if test="skuActFlag != null" >
+        #{skuActFlag,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="createByName != null" >
+        #{createBy.name,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        #{lastUpdateBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateByName != null" >
+        #{lastUpdateBy.name,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actFlag != null" >
+        #{actFlag,jdbcType=CHAR},
+      </if>
+      <if test="points != null" >
+        #{points,jdbcType=DECIMAL},
+      </if>
+      <if test="supplyPrice != null" >
+        #{supplyPrice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.ffzx.stms.model.PriceSchemeDetail">
+		update price_scheme_detail
+		<set>
+			<if test="effectiveProgrammeCode != null">
+				effective_programme_code = #{effectiveProgrammeCode,jdbcType=VARCHAR},
+			</if>
+			<if test="skuBarcode != null">
+				sku_barcode = #{skuBarcode,jdbcType=VARCHAR},
+			</if>
+			<if test="commodityAttributeValues != null">
+				commodity_attribute_values = #{commodityAttributeValues,jdbcType=VARCHAR},
+			</if>
+			<if test="skuActFlag != null">
+				sku_act_flag = #{skuActFlag,jdbcType=CHAR},
+			</if>
+			<if test="createBy != null">
+				<if test="createBy.id != null and '' != createBy.id">
+					create_by = #{createBy.id,jdbcType=VARCHAR},
+				</if>
+				<if test="createBy.name != null and '' != createBy.name">
+					create_by_name = #{createBy.name,jdbcType=VARCHAR},
+				</if>
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+            <if test="lastUpdateBy != null">
+                <if test="lastUpdateBy.id != null and '' != lastUpdateBy.id">
+                    last_update_by = #{lastUpdateBy.id,jdbcType=VARCHAR},
+                </if>
+                <if test="lastUpdateBy.name != null and '' != lastUpdateBy.name">
+                    last_update_by_name = #{lastUpdateBy.name,jdbcType=VARCHAR},
+                </if>
+            </if>
+			<if test="lastUpdateDate != null">
+				last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="actFlag != null">
+				act_flag = #{actFlag,jdbcType=CHAR},
+			</if>
+			<if test="points != null">
+				points = #{points,jdbcType=DECIMAL},
+			</if>
+			<if test="supplyPrice != null">
+				supply_price = #{supplyPrice,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+  <update id="updateByPrimaryKey" parameterType="com.ffzx.stms.model.PriceSchemeDetail" >
+    update price_scheme_detail
+    set effective_programme_code = #{effectiveProgrammeCode,jdbcType=VARCHAR},
+      sku_barcode = #{skuBarcode,jdbcType=VARCHAR},
+      commodity_attribute_values = #{commodityAttributeValues,jdbcType=VARCHAR},
+      sku_act_flag = #{skuActFlag,jdbcType=CHAR},
+      create_by = #{createBy.id,jdbcType=VARCHAR},
+      create_by_name = #{createBy.name,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      last_update_by = #{lastUpdateBy.id,jdbcType=VARCHAR},
+      last_update_by_name = #{lastUpdateBy.name,jdbcType=VARCHAR},
+      last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      act_flag = #{actFlag,jdbcType=CHAR},
+      points = #{points,jdbcType=DECIMAL},
+      supply_price = #{supplyPrice,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectderive" resultType="com.ffzx.stms.model.PriceSchemeDetail" parameterType="map">
+       SELECT 
+       t.sku_barcode 'skuBarcode',
+       t.commodity_attribute_values 'commodityAttributeValues',
+       t.sku_act_flag 'skuActFlag',
+       t.supply_price 'supplyPrice',
+       t.points 'points',
+       t.create_by_name 'createBy.name',
+       t.create_date 'createDate',
+       t.last_update_by_name 'lastUpdateBy.name',
+       t.last_update_date 'lastUpdateDate',
+       ps.code 'priceScheme.code',
+       ps.name 'priceScheme.name',
+       ps.type 'priceScheme.type',
+       ps.status 'priceScheme.status',
+       ps.settlement_pattern 'priceScheme.settlementPattern', 
+       ps.effective_time 'priceScheme.effectiveTime',
+       ps.invalid_time 'priceScheme.invalidTime',
+       ps.vendor_code 'priceScheme.vendor.code',
+       cm.name 'priceScheme.commodity.name',
+       vd.name 'priceScheme.vendor.name',
+       vd.purchase_type 'priceScheme.vendor.purchaseType'
+		FROM price_scheme_detail t
+		LEFT JOIN price_scheme ps on ps.`code`=t.effective_programme_code
+		LEFT JOIN cims_db.commodity cm on cm.code=ps.commodity_code 
+		inner join uc_db.vendor vd on vd.code = ps.vendor_code
+		where 1=1
+       <if test="params.vendorCode != null" >
+        AND ps.vendor_code = #{params.vendorCode,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.purchaseType != null" >
+        AND vd.purchase_type = #{params.purchaseType,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.settlementType != null" >
+        AND ps.settlement_pattern = #{params.settlementType,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.commodityCode != null" >
+        AND ps.commodity_code = #{params.commodityCode,jdbcType=TIMESTAMP}
+      </if>
+   </select>
+  
+  
+</mapper>

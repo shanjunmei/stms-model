@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ffzx.stms.mapper.BillLogMapper" >
+  <resultMap id="BaseResultMap" type="com.ffzx.stms.model.BillLog" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="bill_detail_id" property="billDetailId" jdbcType="VARCHAR" />
+    <result column="bill_no" property="billNo" jdbcType="VARCHAR" />
+    <result column="commodity_price_total" property="commodityPriceTotal" jdbcType="DECIMAL" />
+    <result column="payable_amount_before" property="payableAmountBefore" jdbcType="DECIMAL" />
+    <result column="payable_amount_after" property="payableAmountAfter" jdbcType="DECIMAL" />
+    <result column="supply_before" property="supplyBefore" jdbcType="DECIMAL" />
+    <result column="supply_after" property="supplyAfter" jdbcType="DECIMAL" />
+    <result column="points_before" property="pointsBefore" jdbcType="DECIMAL" />
+    <result column="points_after" property="pointsAfter" jdbcType="DECIMAL" />
+    <result column="refundable_amount_before" property="refundableAmountBefore" jdbcType="DECIMAL" />
+    <result column="refundable_amount_after" property="refundableAmountAfter" jdbcType="DECIMAL" />
+    <result column="create_by" property="createBy.id" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_by" property="lastUpdateBy.id" jdbcType="VARCHAR" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="BigResultMap" type="com.ffzx.stms.model.BillLog" extends="BaseResultMap">
+    <id column="bd_id" property="billDetail.id" jdbcType="VARCHAR" />
+    <result column="bd_bill_no" property="billDetail.billNo" jdbcType="VARCHAR" />
+    <result column="bd_order_no" property="billDetail.orderNo" jdbcType="VARCHAR" />
+    <result column="bd_sku_bar_code" property="billDetail.skuBarCode" jdbcType="VARCHAR" />
+    <result column="bd_sku_code" property="billDetail.skuCode" jdbcType="VARCHAR" />
+    <result column="bd_commodity_code" property="billDetail.commodityCode" jdbcType="VARCHAR" />
+    <result column="bd_commodity_name" property="billDetail.commodityName" jdbcType="VARCHAR" />
+    <result column="bd_commodity_price_total" property="billDetail.commodityPriceTotal" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    t.id, t.bill_detail_id, t.bill_no, t.commodity_price_total, t.payable_amount_before, 
+    t.payable_amount_after, t.supply_before, t.supply_after, t.points_before, t.points_after, 
+    t.refundable_amount_before, t.refundable_amount_after, t.create_by as 'createBy.id', 
+    t.create_date, t.last_update_by as 'lastUpdateBy.id', t.last_update_date
+  </sql>
+  <sql id="BillDetail_Column_List">
+  	bd.id as bd_id, bd.bill_no as bd_bill_no, bd.order_no as bd_order_no, 
+  	bd.sku_bar_code as bd_sku_bar_code, bd.sku_code as bd_sku_code, 
+  	bd.commodity_code as bd_commodity_code,	bd.commodity_name as bd_commodity_name, 
+  	bd.commodity_price_total as bd_commodity_price_total 
+  </sql>
+  <sql id="condition" >
+    <if test="null!=params" >
+      <if test="params.id != null and '' != params.id" >
+        and t.id = #{params.id,jdbcType=VARCHAR}
+      </if>
+      <if test="params.billDetailId != null and '' != params.billDetailId" >
+        and t.bill_detail_id = #{params.billDetailId,jdbcType=VARCHAR}
+      </if>
+      <if test="params.billNo != null and '' != params.billNo" >
+        and t.bill_no = #{params.billNo,jdbcType=VARCHAR}
+      </if>
+      <if test="params.commodityPriceTotal != null" >
+        and t.commodity_price_total = #{params.commodityPriceTotal,jdbcType=DECIMAL}
+      </if>
+      <if test="params.payableAmountBefore != null" >
+        and t.payable_amount_before = #{params.payableAmountBefore,jdbcType=DECIMAL}
+      </if>
+      <if test="params.payableAmountAfter != null" >
+        and t.payable_amount_after = #{params.payableAmountAfter,jdbcType=DECIMAL}
+      </if>
+      <if test="params.supplyBefore != null" >
+        and t.supply_before = #{params.supplyBefore,jdbcType=DECIMAL}
+      </if>
+      <if test="params.supplyAfter != null" >
+        and t.supply_after = #{params.supplyAfter,jdbcType=DECIMAL}
+      </if>
+      <if test="params.pointsBefore != null" >
+        and t.points_before = #{params.pointsBefore,jdbcType=DECIMAL}
+      </if>
+      <if test="params.pointsAfter != null" >
+        and t.points_after = #{params.pointsAfter,jdbcType=DECIMAL}
+      </if>
+      <if test="params.refundableAmountBefore != null" >
+        and t.refundable_amount_before = #{params.refundableAmountBefore,jdbcType=DECIMAL}
+      </if>
+      <if test="params.refundableAmountAfter != null" >
+        and t.refundable_amount_after = #{params.refundableAmountAfter,jdbcType=DECIMAL}
+      </if>
+      <if test="params.createBy != null and '' != params.createBy" >
+        and t.create_by = #{params.createBy.id,jdbcType=VARCHAR}
+      </if>
+      <if test="params.createDate != null" >
+        and t.create_date = #{params.createDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.lastUpdateBy != null and '' != params.lastUpdateBy" >
+        and t.last_update_by = #{params.lastUpdateBy.id,jdbcType=VARCHAR}
+      </if>
+      <if test="params.lastUpdateDate != null" >
+        and t.last_update_date = #{params.lastUpdateDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.orderNo != null and '' != params.orderNo" >
+       and bd.order_no LIKE CONCAT(#{params.orderNo,jdbcType=VARCHAR}, '%')
+      </if>
+      
+      <if test="params.updateDateStart != null" >
+      	<![CDATA[
+        and t.last_update_date >= #{params.updateDateStart,jdbcType=TIMESTAMP}
+        ]]>
+      </if>
+      <if test="params.updateDateEnd != null" >
+      	<![CDATA[
+        and t.last_update_date <= #{params.updateDateEnd,jdbcType=TIMESTAMP}
+        ]]>
+      </if>
+    </if>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from bill_log t  
+    where t.id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByParams" resultMap="BigResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />, 
+    <include refid="BillDetail_Column_List" />, 
+    su.`name` AS 'lastUpdateBy.name' 
+    from bill_log t, bill_detail bd,
+	pms_db.sys_user su
+    where t.bill_detail_id = bd.id AND t.last_update_by = su.id 
+    <include refid="condition" />
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" >
+    select count(1) as s from bill_log t  where 1=1
+    <include refid="condition" />
+  </select>
+  <select id="selectByPage" resultMap="BigResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />, 
+    <include refid="BillDetail_Column_List" />, 
+    su.`name` AS 'lastUpdateBy.name' 
+    from bill_log t, bill_detail bd,
+	pms_db.sys_user su
+    where t.bill_detail_id = bd.id AND t.last_update_by = su.id 
+    <include refid="condition" />
+    <if test="orderByField != null and ''!=orderByField" >
+      order by t.${orderByField} 
+      <if test="orderByField" >
+        ${orderBy}
+      </if>
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from bill_log
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByPrimarayKeyForModel" parameterType="com.ffzx.stms.model.BillLog" >
+    delete from bill_log
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ffzx.stms.model.BillLog" >
+    insert into bill_log (id, bill_detail_id, bill_no, 
+      commodity_price_total, payable_amount_before, 
+      payable_amount_after, supply_before, supply_after, 
+      points_before, points_after, refundable_amount_before, 
+      refundable_amount_after, create_by, create_date, 
+      last_update_by, last_update_date)
+    values (#{id,jdbcType=VARCHAR}, #{billDetailId,jdbcType=VARCHAR}, #{billNo,jdbcType=VARCHAR}, 
+      #{commodityPriceTotal,jdbcType=DECIMAL}, #{payableAmountBefore,jdbcType=DECIMAL}, 
+      #{payableAmountAfter,jdbcType=DECIMAL}, #{supplyBefore,jdbcType=DECIMAL}, #{supplyAfter,jdbcType=DECIMAL}, 
+      #{pointsBefore,jdbcType=DECIMAL}, #{pointsAfter,jdbcType=DECIMAL}, #{refundableAmountBefore,jdbcType=DECIMAL}, 
+      #{refundableAmountAfter,jdbcType=DECIMAL}, #{createBy.id,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{lastUpdateBy.id,jdbcType=VARCHAR}, #{lastUpdateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ffzx.stms.model.BillLog" >
+    insert into bill_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billDetailId != null" >
+        bill_detail_id,
+      </if>
+      <if test="billNo != null" >
+        bill_no,
+      </if>
+      <if test="commodityPriceTotal != null" >
+        commodity_price_total,
+      </if>
+      <if test="payableAmountBefore != null" >
+        payable_amount_before,
+      </if>
+      <if test="payableAmountAfter != null" >
+        payable_amount_after,
+      </if>
+      <if test="supplyBefore != null" >
+        supply_before,
+      </if>
+      <if test="supplyAfter != null" >
+        supply_after,
+      </if>
+      <if test="pointsBefore != null" >
+        points_before,
+      </if>
+      <if test="pointsAfter != null" >
+        points_after,
+      </if>
+      <if test="refundableAmountBefore != null" >
+        refundable_amount_before,
+      </if>
+      <if test="refundableAmountAfter != null" >
+        refundable_amount_after,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="billDetailId != null" >
+        #{billDetailId,jdbcType=VARCHAR},
+      </if>
+      <if test="billNo != null" >
+        #{billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityPriceTotal != null" >
+        #{commodityPriceTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="payableAmountBefore != null" >
+        #{payableAmountBefore,jdbcType=DECIMAL},
+      </if>
+      <if test="payableAmountAfter != null" >
+        #{payableAmountAfter,jdbcType=DECIMAL},
+      </if>
+      <if test="supplyBefore != null" >
+        #{supplyBefore,jdbcType=DECIMAL},
+      </if>
+      <if test="supplyAfter != null" >
+        #{supplyAfter,jdbcType=DECIMAL},
+      </if>
+      <if test="pointsBefore != null" >
+        #{pointsBefore,jdbcType=DECIMAL},
+      </if>
+      <if test="pointsAfter != null" >
+        #{pointsAfter,jdbcType=DECIMAL},
+      </if>
+      <if test="refundableAmountBefore != null" >
+        #{refundableAmountBefore,jdbcType=DECIMAL},
+      </if>
+      <if test="refundableAmountAfter != null" >
+        #{refundableAmountAfter,jdbcType=DECIMAL},
+      </if>
+      <if test="createBy != null" >
+        #{createBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        #{lastUpdateBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ffzx.stms.model.BillLog" >
+    update bill_log
+    <set >
+      <if test="billDetailId != null" >
+        bill_detail_id = #{billDetailId,jdbcType=VARCHAR},
+      </if>
+      <if test="billNo != null" >
+        bill_no = #{billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityPriceTotal != null" >
+        commodity_price_total = #{commodityPriceTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="payableAmountBefore != null" >
+        payable_amount_before = #{payableAmountBefore,jdbcType=DECIMAL},
+      </if>
+      <if test="payableAmountAfter != null" >
+        payable_amount_after = #{payableAmountAfter,jdbcType=DECIMAL},
+      </if>
+      <if test="supplyBefore != null" >
+        supply_before = #{supplyBefore,jdbcType=DECIMAL},
+      </if>
+      <if test="supplyAfter != null" >
+        supply_after = #{supplyAfter,jdbcType=DECIMAL},
+      </if>
+      <if test="pointsBefore != null" >
+        points_before = #{pointsBefore,jdbcType=DECIMAL},
+      </if>
+      <if test="pointsAfter != null" >
+        points_after = #{pointsAfter,jdbcType=DECIMAL},
+      </if>
+      <if test="refundableAmountBefore != null" >
+        refundable_amount_before = #{refundableAmountBefore,jdbcType=DECIMAL},
+      </if>
+      <if test="refundableAmountAfter != null" >
+        refundable_amount_after = #{refundableAmountAfter,jdbcType=DECIMAL},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by = #{lastUpdateBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ffzx.stms.model.BillLog" >
+    update bill_log
+    set bill_detail_id = #{billDetailId,jdbcType=VARCHAR},
+      bill_no = #{billNo,jdbcType=VARCHAR},
+      commodity_price_total = #{commodityPriceTotal,jdbcType=DECIMAL},
+      payable_amount_before = #{payableAmountBefore,jdbcType=DECIMAL},
+      payable_amount_after = #{payableAmountAfter,jdbcType=DECIMAL},
+      supply_before = #{supplyBefore,jdbcType=DECIMAL},
+      supply_after = #{supplyAfter,jdbcType=DECIMAL},
+      points_before = #{pointsBefore,jdbcType=DECIMAL},
+      points_after = #{pointsAfter,jdbcType=DECIMAL},
+      refundable_amount_before = #{refundableAmountBefore,jdbcType=DECIMAL},
+      refundable_amount_after = #{refundableAmountAfter,jdbcType=DECIMAL},
+      create_by = #{createBy.id,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      last_update_by = #{lastUpdateBy.id,jdbcType=VARCHAR},
+      last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

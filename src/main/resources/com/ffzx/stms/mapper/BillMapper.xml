@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ffzx.stms.mapper.BillMapper" >
+  <resultMap id="BaseResultMap" type="com.ffzx.stms.model.Bill" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="bill_no" property="billNo" jdbcType="VARCHAR" />
+    <result column="invoice_num" property="invoiceNum" jdbcType="VARCHAR" />
+    <result column="invoice_status" property="invoiceStatus" jdbcType="VARCHAR" />
+    <result column="bill_status" property="billStatus" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="vendor_code" property="vendorCode" jdbcType="VARCHAR" />
+    <result column="vendor_name" property="vendorName" jdbcType="VARCHAR" />
+    <result column="goods_total_count" property="goodsTotalCount" jdbcType="DECIMAL" />
+    <result column="supply_total" property="supplyTotal" jdbcType="DECIMAL" />
+    <result column="points_amount_total" property="pointsAmountTotal" jdbcType="DECIMAL" />
+    <result column="payable_amount_total" property="payableAmountTotal" jdbcType="DECIMAL" />
+    <result column="payable_obtain_amount_total" property="payableObtainAmountTotal" jdbcType="DECIMAL" />
+    <result column="refund_bill_total_count" property="refundBillTotalCount" jdbcType="DECIMAL" />
+    <result column="business_start_date_time" property="businessStartDateTime" jdbcType="TIMESTAMP" />
+    <result column="business_end_date_time" property="businessEndDateTime" jdbcType="TIMESTAMP" />
+    <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP" />
+    <result column="auditor" property="auditor" jdbcType="VARCHAR" />
+    <result column="auditor_id" property="auditorId" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy.id" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_by" property="lastUpdateBy.id" jdbcType="VARCHAR" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="BigResultMap" type="com.ffzx.stms.model.BillDetail" extends="BaseResultMap" >
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="settlement_pattern" property="settlementPattern" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    t.id, t.bill_no, t.invoice_num, t.invoice_status, t.bill_status, t.type, t.vendor_code, 
+    t.vendor_name, t.goods_total_count, t.supply_total, t.points_amount_total, t.payable_amount_total, 
+    t.payable_obtain_amount_total, t.refund_bill_total_count, t.business_start_date_time, 
+    t.business_end_date_time, t.audit_time, t.auditor, t.auditor_id, t.create_by as 'createBy.id', 
+    t.create_date, t.last_update_by as 'lastUpdateBy.id', t.last_update_date
+  </sql>
+  
+  <sql id="Blob_Column_List" >
+    b.order_no, b.settlement_pattern
+  </sql>
+ 
+  <sql id="condition" >
+    <if test="null!=params" >
+      <if test="params.id != null and '' != params.id" >
+        and t.id = #{params.id,jdbcType=VARCHAR}
+      </if>
+      <if test="params.billNo != null and '' != params.billNo" >
+       and t.bill_no LIKE CONCAT(#{params.billNo,jdbcType=VARCHAR}, '%')
+      </if>
+      
+	 <if test="params.invoiceNum != null and '' != params.invoiceNum">
+			and t.invoice_num LIKE CONCAT(#{params.invoiceNum,jdbcType=VARCHAR}, '%')
+		</if>
+      <if test="params.invoiceStatus != null and '' != params.invoiceStatus" >
+        and t.invoice_status = #{params.invoiceStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="params.billStatus != null and '' != params.billStatus" >
+        and t.bill_status = #{params.billStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="params.type != null and '' != params.type" >
+        and t.type = #{params.type,jdbcType=VARCHAR}
+      </if>
+      <if test="params.vendorCode != null and '' != params.vendorCode" >
+        and t.vendor_code = #{params.vendorCode,jdbcType=VARCHAR}
+      </if>
+      <if test="params.vendorName != null and '' != params.vendorName" >
+        and t.vendor_name = #{params.vendorName,jdbcType=VARCHAR}
+      </if>
+      <if test="params.goodsTotalCount != null" >
+        and t.goods_total_count = #{params.goodsTotalCount,jdbcType=DECIMAL}
+      </if>
+      <if test="params.supplyTotal != null" >
+        and t.supply_total = #{params.supplyTotal,jdbcType=DECIMAL}
+      </if>
+      <if test="params.pointsAmountTotal != null" >
+        and t.points_amount_total = #{params.pointsAmountTotal,jdbcType=DECIMAL}
+      </if>
+      <if test="params.payableAmountTotalMin != null" >
+      	<![CDATA[
+        and t.payable_amount_total >= #{params.payableAmountTotalMin,jdbcType=DECIMAL}
+        ]]>
+      </if>
+      <if test="params.payableAmountTotalMax != null" >
+      	<![CDATA[
+        and t.payable_amount_total <= #{params.payableAmountTotalMax,jdbcType=DECIMAL}
+        ]]>
+      </if>
+      <if test="params.payableAmountTotal != null" >
+        and t.payable_amount_total = #{params.payableAmountTotal,jdbcType=DECIMAL}
+      </if>
+      <if test="params.payableObtainAmountTotal != null" >
+        and t.payable_obtain_amount_total = #{params.payableObtainAmountTotal,jdbcType=DECIMAL}
+      </if>
+      <if test="params.maxrefundBillTotalCount != null and '' != params.maxrefundBillTotalCount" >
+      	<![CDATA[
+	      AND t.refund_bill_total_count <= #{params.maxrefundBillTotalCount,jdbcType=VARCHAR}
+	    ]]>
+      </if>
+      <if test="params.minrefundBillTotalCount != null and '' != params.minrefundBillTotalCount" >
+      	<![CDATA[
+	     AND t.refund_bill_total_count >= #{params.minrefundBillTotalCount,jdbcType=VARCHAR}
+	    ]]>
+      </if>
+      <if test="params.businessStartDateTime != null and '' != params.businessStartDateTime">
+      	<![CDATA[
+          and t.business_start_date_time >= #{params.businessStartDateTime,jdbcType=TIMESTAMP}
+        ]]>          
+      </if>
+      <if test="params.businessEndDateTime != null and '' != params.businessEndDateTime">
+      	<![CDATA[
+          and t.business_end_date_time <= #{params.businessEndDateTime,jdbcType=TIMESTAMP}
+        ]]>
+      </if>
+      
+      
+      <if test="params.auditTime != null" >
+        and t.audit_time = #{params.auditTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.auditor != null and '' != params.auditor" >
+        and t.auditor = #{params.auditor,jdbcType=VARCHAR}
+      </if>
+      <if test="params.auditorId != null and '' != params.auditorId" >
+        and t.auditor_id = #{params.auditorId,jdbcType=VARCHAR}
+      </if>
+      <if test="params.createBy != null and '' != params.createBy" >
+        and t.create_by = #{params.createBy.id,jdbcType=VARCHAR}
+      </if>
+      <if test="params.createDate != null" >
+        and t.create_date = #{params.createDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.lastUpdateBy != null and '' != params.lastUpdateBy" >
+        and t.last_update_by = #{params.lastUpdateBy.id,jdbcType=VARCHAR}
+      </if>
+      <if test="params.lastUpdateDate != null" >
+        and t.last_update_date = #{params.lastUpdateDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.orderNo != null and '' != params.orderNo" >
+        and t.bill_no in (select bd.bill_no from bill_detail bd 
+        where bd.order_no LIKE CONCAT(#{params.orderNo,jdbcType=VARCHAR}, '%'))
+      </if>
+      <if test="params.settlementPattern != null and '' != params.settlementPattern" >
+        and t.bill_no in (select bd.bill_no from bill_detail bd 
+        where bd.settlement_pattern LIKE CONCAT(#{params.settlementPattern,jdbcType=VARCHAR}, '%'))
+      </if>
+       <if test="params.invoiceNumIsNull!=null and ''!=params.invoiceNumIsNull">
+      	and (t.invoice_num is null or t.invoice_num='') 
+      </if>
+      <if test="params.bills!=null">
+      	and t.bill_no  in 
+      	
+      	<foreach collection="params.bills" item="bno" index="index"
+            open="(" close=")" separator=",">
+            #{bno}
+        </foreach>
+      </if>
+      
+      
+    </if>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from bill t 
+    where t.id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from bill t 
+    where 1=1
+    <include refid="condition" />
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" >
+    select count(1) as s from bill t  where 1=1
+    <include refid="condition" />
+  </select>
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="map" >
+    select 
+      <include refid="Base_Column_List" />
+    from bill t 
+    where 1=1
+    <include refid="condition" />
+    <if test="orderByField != null and ''!=orderByField" >
+      order by t.${orderByField} 
+      <if test="orderByField" >
+        ${orderBy}
+      </if>
+    </if>
+  </select>
+  
+  <select id="createBillRefund" resultType="com.ffzx.stms.model.Bill" parameterType="map" >
+    SELECT 
+    bdRefund.vendor_code AS vendorCode,
+    bdRefund.vendor_name AS vendorName,
+   	IFNULL(SUM(bdRefund.supply_amount), 0) AS supplyTotal,
+  	IFNULL(SUM(bdRefund.points_amount), 0) AS pointsAmountTotal,
+	IFNULL(SUM(bdRefund.payable_amount), 0) AS payableAmountTotal,
+	IFNULL(SUM(bdRefund.payable_obtain_amount), 0) AS payableObtainAmountTotal,
+    IFNULL(SUM(bdRefund.commodity_price_total), 0) AS goodsTotalCount,
+    IFNULL(SUM(bdRefund.refundable_amount), 0) AS refundBillTotalCount,
+    MIN(bdRefund.order_create_date) AS businessStartDateTime,
+    MAX(bdRefund.order_create_date) AS businessEndDateTime
+    FROM bill_detail AS bdRefund 
+    INNER JOIN bill_detail AS bdPay ON (bdRefund.order_no = bdPay.order_no AND bdRefund.sku_code = bdPay.sku_code)
+    INNER JOIN bill AS bPay ON bPay.bill_no = bdPay.bill_no
+    WHERE 1=1 
+    AND bdPay.payable_status = '3'
+    AND bPay.bill_status = '2'
+    AND bdRefund.refund_status = '1'
+    AND bdRefund.`type` = '1'
+    GROUP BY bdRefund.vendor_code
+  </select>
+  
+  <select id="findByBillByBillNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+   	select 
+    <include refid="Base_Column_List" />
+    from bill as t 
+    where  t.bill_no = #{BillNo,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from bill
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByPrimarayKeyForModel" parameterType="com.ffzx.stms.model.Bill" >
+    delete from bill
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ffzx.stms.model.Bill" >
+    insert into bill (id, bill_no, invoice_num, 
+      invoice_status, bill_status, type, 
+      vendor_code, vendor_name, goods_total_count, 
+      supply_total, points_amount_total, payable_amount_total, 
+      payable_obtain_amount_total, refund_bill_total_count, 
+      business_start_date_time, business_end_date_time, 
+      audit_time, auditor, auditor_id, 
+      create_by, create_date, last_update_by, 
+      last_update_date)
+    values (#{id,jdbcType=VARCHAR}, #{billNo,jdbcType=VARCHAR}, #{invoiceNum,jdbcType=VARCHAR}, 
+      #{invoiceStatus,jdbcType=VARCHAR}, #{billStatus,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{vendorCode,jdbcType=VARCHAR}, #{vendorName,jdbcType=VARCHAR}, #{goodsTotalCount,jdbcType=DECIMAL}, 
+      #{supplyTotal,jdbcType=DECIMAL}, #{pointsAmountTotal,jdbcType=DECIMAL}, #{payableAmountTotal,jdbcType=DECIMAL}, 
+      #{payableObtainAmountTotal,jdbcType=DECIMAL}, #{refundBillTotalCount,jdbcType=DECIMAL}, 
+      #{businessStartDateTime,jdbcType=TIMESTAMP}, #{businessEndDateTime,jdbcType=TIMESTAMP}, 
+      #{auditTime,jdbcType=TIMESTAMP}, #{auditor,jdbcType=VARCHAR}, #{auditorId,jdbcType=VARCHAR}, 
+      #{createBy.id,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{lastUpdateBy.id,jdbcType=VARCHAR}, 
+      #{lastUpdateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ffzx.stms.model.Bill" >
+    insert into bill
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billNo != null" >
+        bill_no,
+      </if>
+      <if test="invoiceNum != null" >
+        invoice_num,
+      </if>
+      <if test="invoiceStatus != null" >
+        invoice_status,
+      </if>
+      <if test="billStatus != null" >
+        bill_status,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="vendorCode != null" >
+        vendor_code,
+      </if>
+      <if test="vendorName != null" >
+        vendor_name,
+      </if>
+      <if test="goodsTotalCount != null" >
+        goods_total_count,
+      </if>
+      <if test="supplyTotal != null" >
+        supply_total,
+      </if>
+      <if test="pointsAmountTotal != null" >
+        points_amount_total,
+      </if>
+      <if test="payableAmountTotal != null" >
+        payable_amount_total,
+      </if>
+      <if test="payableObtainAmountTotal != null" >
+        payable_obtain_amount_total,
+      </if>
+      <if test="refundBillTotalCount != null" >
+        refund_bill_total_count,
+      </if>
+      <if test="businessStartDateTime != null" >
+        business_start_date_time,
+      </if>
+      <if test="businessEndDateTime != null" >
+        business_end_date_time,
+      </if>
+      <if test="auditTime != null" >
+        audit_time,
+      </if>
+      <if test="auditor != null" >
+        auditor,
+      </if>
+      <if test="auditorId != null" >
+        auditor_id,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="billNo != null" >
+        #{billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceNum != null" >
+        #{invoiceNum,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceStatus != null" >
+        #{invoiceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="billStatus != null" >
+        #{billStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="vendorCode != null" >
+        #{vendorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="vendorName != null" >
+        #{vendorName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsTotalCount != null" >
+        #{goodsTotalCount,jdbcType=DECIMAL},
+      </if>
+      <if test="supplyTotal != null" >
+        #{supplyTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="pointsAmountTotal != null" >
+        #{pointsAmountTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="payableAmountTotal != null" >
+        #{payableAmountTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="payableObtainAmountTotal != null" >
+        #{payableObtainAmountTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="refundBillTotalCount != null" >
+        #{refundBillTotalCount,jdbcType=DECIMAL},
+      </if>
+      <if test="businessStartDateTime != null" >
+        #{businessStartDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="businessEndDateTime != null" >
+        #{businessEndDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditTime != null" >
+        #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditor != null" >
+        #{auditor,jdbcType=VARCHAR},
+      </if>
+      <if test="auditorId != null" >
+        #{auditorId,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        #{lastUpdateBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ffzx.stms.model.Bill" >
+    update bill
+    <set >
+      <if test="billNo != null" >
+        bill_no = #{billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceNum != null" >
+        invoice_num = #{invoiceNum,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceStatus != null" >
+        invoice_status = #{invoiceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="billStatus != null" >
+        bill_status = #{billStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="vendorCode != null" >
+        vendor_code = #{vendorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="vendorName != null" >
+        vendor_name = #{vendorName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsTotalCount != null" >
+        goods_total_count = #{goodsTotalCount,jdbcType=DECIMAL},
+      </if>
+      <if test="supplyTotal != null" >
+        supply_total = #{supplyTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="pointsAmountTotal != null" >
+        points_amount_total = #{pointsAmountTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="payableAmountTotal != null" >
+        payable_amount_total = #{payableAmountTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="payableObtainAmountTotal != null" >
+        payable_obtain_amount_total = #{payableObtainAmountTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="refundBillTotalCount != null" >
+        refund_bill_total_count = #{refundBillTotalCount,jdbcType=DECIMAL},
+      </if>
+      <if test="businessStartDateTime != null" >
+        business_start_date_time = #{businessStartDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="businessEndDateTime != null" >
+        business_end_date_time = #{businessEndDateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditTime != null" >
+        audit_time = #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditor != null" >
+        auditor = #{auditor,jdbcType=VARCHAR},
+      </if>
+      <if test="auditorId != null" >
+        auditor_id = #{auditorId,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by = #{lastUpdateBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ffzx.stms.model.Bill" >
+    update bill
+    set bill_no = #{billNo,jdbcType=VARCHAR},
+      invoice_num = #{invoiceNum,jdbcType=VARCHAR},
+      invoice_status = #{invoiceStatus,jdbcType=VARCHAR},
+      bill_status = #{billStatus,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      vendor_code = #{vendorCode,jdbcType=VARCHAR},
+      vendor_name = #{vendorName,jdbcType=VARCHAR},
+      goods_total_count = #{goodsTotalCount,jdbcType=DECIMAL},
+      supply_total = #{supplyTotal,jdbcType=DECIMAL},
+      points_amount_total = #{pointsAmountTotal,jdbcType=DECIMAL},
+      payable_amount_total = #{payableAmountTotal,jdbcType=DECIMAL},
+      payable_obtain_amount_total = #{payableObtainAmountTotal,jdbcType=DECIMAL},
+      refund_bill_total_count = #{refundBillTotalCount,jdbcType=DECIMAL},
+      business_start_date_time = #{businessStartDateTime,jdbcType=TIMESTAMP},
+      business_end_date_time = #{businessEndDateTime,jdbcType=TIMESTAMP},
+      audit_time = #{auditTime,jdbcType=TIMESTAMP},
+      auditor = #{auditor,jdbcType=VARCHAR},
+      auditor_id = #{auditorId,jdbcType=VARCHAR},
+      create_by = #{createBy.id,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      last_update_by = #{lastUpdateBy.id,jdbcType=VARCHAR},
+      last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateStatusByInvoceNumAndType" parameterType="com.ffzx.stms.model.Bill">
+  	update bill set bill_status=#{billStatus,jdbcType=VARCHAR}
+  	
+  	where invoice_num = #{invoiceNum,jdbcType=VARCHAR} and type= #{type,jdbcType=VARCHAR}
+  </update>
+</mapper>

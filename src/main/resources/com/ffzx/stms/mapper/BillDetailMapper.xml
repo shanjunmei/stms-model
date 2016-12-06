@@ -1,0 +1,832 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ffzx.stms.mapper.BillDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.ffzx.stms.model.BillDetail" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="bill_no" property="billNo" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="outbound_no" property="outboundNo" jdbcType="VARCHAR" />
+    <result column="refund_no" property="refundNo" jdbcType="VARCHAR" />
+    <result column="order_create_date" property="orderCreateDate" jdbcType="TIMESTAMP" />
+    <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+    <result column="outbound_time" property="outboundTime" jdbcType="TIMESTAMP" />
+    <result column="refund_time" property="refundTime" jdbcType="TIMESTAMP" />
+    <result column="payable_status" property="payableStatus" jdbcType="VARCHAR" />
+    <result column="refund_status" property="refundStatus" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="commodity_code" property="commodityCode" jdbcType="VARCHAR" />
+    <result column="sku_bar_code" property="skuBarCode" jdbcType="VARCHAR" />
+    <result column="sku_code" property="skuCode" jdbcType="VARCHAR" />
+    <result column="commodity_name" property="commodityName" jdbcType="VARCHAR" />
+    <result column="commodity_attribute_values" property="commodityAttributeValues" jdbcType="VARCHAR" />
+    <result column="buy_num" property="buyNum" jdbcType="INTEGER" />
+    <result column="commodity_price" property="commodityPrice" jdbcType="DECIMAL" />
+    <result column="commodity_price_total" property="commodityPriceTotal" jdbcType="DECIMAL" />
+    <result column="supply" property="supply" jdbcType="DECIMAL" />
+    <result column="supply_amount" property="supplyAmount" jdbcType="DECIMAL" />
+    <result column="points" property="points" jdbcType="DECIMAL" />
+    <result column="points_amount" property="pointsAmount" jdbcType="DECIMAL" />
+    <result column="payable_amount" property="payableAmount" jdbcType="DECIMAL" />
+    <result column="payable_obtain_amount" property="payableObtainAmount" jdbcType="DECIMAL" />
+    <result column="refundable_amount" property="refundableAmount" jdbcType="DECIMAL" />
+    <result column="vendor_code" property="vendorCode" jdbcType="VARCHAR" />
+    <result column="vendor_name" property="vendorName" jdbcType="VARCHAR" />
+    <result column="vendor_effect_date" property="vendorEffectDate" jdbcType="TIMESTAMP" />
+    <result column="purchase_type" property="purchaseType" jdbcType="VARCHAR" />
+    <result column="purchase_type_effect_date" property="purchaseTypeEffectDate" jdbcType="TIMESTAMP" />
+    <result column="settlement_pattern" property="settlementPattern" jdbcType="VARCHAR" />
+    <result column="settlement_pattern_effect_date" property="settlementPatternEffectDate" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy.id" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_by" property="lastUpdateBy.id" jdbcType="VARCHAR" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="superResultMap" type="com.ffzx.stms.model.BillDetail" extends="BaseResultMap">
+  	<id column="p_id" property="bill.id" jdbcType="VARCHAR" />
+    <result column="p_bill_no" property="bill.billNo" jdbcType="VARCHAR" />
+    <result column="p_invoice_num" property="bill.invoiceNum" jdbcType="VARCHAR" />
+    <result column="p_invoice_status" property="bill.invoiceStatus" jdbcType="VARCHAR" />
+    <result column="p_bill_status" property="bill.billStatus" jdbcType="VARCHAR" />
+    <result column="p_type" property="bill.type" jdbcType="VARCHAR" />
+    <result column="p_vendor_code" property="bill.vendorCode" jdbcType="VARCHAR" />
+    <result column="p_vendor_name" property="bill.vendorName" jdbcType="VARCHAR" />
+    <result column="p_goods_total_count" property="bill.goodsTotalCount" jdbcType="DECIMAL" />
+    <result column="p_supply_total" property="bill.supplyTotal" jdbcType="DECIMAL" />
+    <result column="p_points_amount_total" property="bill.pointsAmountTotal" jdbcType="DECIMAL" />
+    <result column="p_payable_amount_total" property="bill.payableAmountTotal" jdbcType="DECIMAL" />
+    <result column="p_payable_obtain_amount_total" property="bill.payableObtainAmountTotal" jdbcType="DECIMAL" />
+    <result column="p_refund_bill_total_count" property="bill.refundBillTotalCount" jdbcType="DECIMAL" />
+    <result column="p_business_start_date_time" property="bill.businessStartDateTime" jdbcType="TIMESTAMP" />
+    <result column="p_business_end_date_time" property="bill.businessEndDateTime" jdbcType="TIMESTAMP" />
+    <result column="p_audit_time" property="bill.auditTime" jdbcType="TIMESTAMP" />
+    <result column="p_auditor" property="bill.auditor" jdbcType="VARCHAR" />
+    <result column="p_auditor_id" property="bill.auditorId" jdbcType="VARCHAR" />
+    <result column="p_create_by" property="bill.createBy.id" jdbcType="VARCHAR" />
+    <result column="p_create_date" property="bill.createDate" jdbcType="TIMESTAMP" />
+    <result column="p_last_update_by" property="bill.lastUpdateBy.id" jdbcType="VARCHAR" />
+    <result column="p_last_update_date" property="bill.lastUpdateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    t.id, t.bill_no, t.order_no, t.outbound_no, t.refund_no, t.order_create_date, t.pay_time, 
+    t.outbound_time, t.refund_time, t.payable_status, t.refund_status, t.type, t.commodity_code, 
+    t.sku_bar_code, t.sku_code, t.commodity_name, t.commodity_attribute_values, t.buy_num, 
+    t.commodity_price, t.commodity_price_total, t.supply, t.supply_amount, t.points, 
+    t.points_amount, t.payable_amount, t.payable_obtain_amount, t.refundable_amount, 
+    t.vendor_code, t.vendor_name, t.vendor_effect_date, t.purchase_type, t.purchase_type_effect_date, 
+    t.settlement_pattern, t.settlement_pattern_effect_date, t.create_by as 'createBy.id', 
+    t.create_date, t.last_update_by as 'lastUpdateBy.id', t.last_update_date
+  </sql>
+  
+  <sql id="super_Column_List" >
+    b.id as p_id, b.bill_no as p_bill_no, b.invoice_num as p_invoice_num, b.invoice_status as p_invoice_status, 
+    b.bill_status as p_bill_status, b.type as p_type, b.vendor_code as p_vendor_code, 
+    b.vendor_name as p_vendor_name, b.goods_total_count as p_goods_total_count, b.supply_total as p_supply_total, 
+    b.points_amount_total as p_points_amount_total, b.payable_amount_total as p_payable_amount_total, 
+    b.payable_obtain_amount_total as p_payable_obtain_amount_total, b.refund_bill_total_count as p_refund_bill_total_count, 
+    b.business_start_date_time as p_business_start_date_time, b.business_end_date_time as p_business_end_date_time, 
+    b.audit_time as p_audit_time, b.auditor as p_auditor, b.auditor_id as p_auditor_id, 
+    b.create_by as p_create_by, b.create_date as p_create_date, 
+    b.last_update_by as p_last_update_by, b.last_update_date as p_last_update_date
+  </sql>
+  <sql id="condition" >
+    <if test="null!=params" >
+      <if test="params.id != null and '' != params.id" >
+        and t.id = #{params.id,jdbcType=VARCHAR}
+      </if>
+      <if test="params.billNo != null and '' != params.billNo" >
+        and t.bill_no = #{params.billNo,jdbcType=VARCHAR}
+      </if>
+      <if test="params.orderNo != null and '' != params.orderNo" >
+       and t.order_no = #{params.orderNo,jdbcType=VARCHAR}
+      </if>
+      <if test="params.orderNoLike != null and '' != params.orderNoLike" >
+       and t.order_no LIKE CONCAT(#{params.orderNoLike,jdbcType=VARCHAR}, '%')
+      </if>
+      <if test="params.outboundNo != null and '' != params.outboundNo" >
+        and t.outbound_no = #{params.outboundNo,jdbcType=VARCHAR}
+      </if>
+       <if test="params.refundNo != null and '' != params.refundNo" >
+       and t.refund_no = #{params.refundNo,jdbcType=VARCHAR}
+      </if>
+      <if test="params.refundNoLike != null and '' != params.refundNoLike" >
+       and t.refund_no LIKE CONCAT(#{params.refundNoLike,jdbcType=VARCHAR}, '%')
+      </if>
+      <if test="params.orderCreateDate != null" >
+        and t.order_create_date = #{params.orderCreateDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.payTimeStart != null" >
+          <![CDATA[
+          and t.pay_time >= #{params.payTimeStart,jdbcType=TIMESTAMP}    
+          ]]>        
+      </if>
+      <if test="params.payTimeEnd != null" >
+          <![CDATA[
+          and t.pay_time <= #{params.payTimeEnd,jdbcType=TIMESTAMP}
+          ]]>
+      </if>
+      <if test="params.outboundTime != null" >
+        and t.outbound_time = #{params.outboundTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.refundTime != null" >
+        and t.refund_time = #{params.refundTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.payableStatus != null and '' != params.payableStatus" >
+        and t.payable_status = #{params.payableStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="params.refundStatus != null and '' != params.refundStatus" >
+        and t.refund_status = #{params.refundStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="params.type != null and '' != params.type" >
+        and t.type = #{params.type,jdbcType=VARCHAR}
+      </if>
+      <if test="params.commodityCode != null and '' != params.commodityCode" >
+        and t.commodity_code = #{params.commodityCode,jdbcType=VARCHAR}
+      </if>
+      <if test="params.skuBarCode != null and '' != params.skuBarCode" >
+        and t.sku_bar_code = #{params.skuBarCode,jdbcType=VARCHAR}
+      </if>
+      <if test="params.skuBarCodes != null and '' != params.skuBarCodes" >
+        and t.sku_bar_code IN (${params.skuBarCodes})
+      </if>
+      <if test="params.skuCode != null and '' != params.skuCode" >
+        and t.sku_code = #{params.skuCode,jdbcType=VARCHAR}
+      </if>
+      <if test="params.commoditBrcodeName !=null">
+       and (t.sku_bar_code LIKE CONCAT(#{params.commoditBrcodeName,jdbcType=VARCHAR}, '%')
+       or t.commodity_name LIKE CONCAT('%', #{params.commoditBrcodeName,jdbcType=VARCHAR}, '%'))
+      </if>
+      <if test="params.commodityAttributeValues != null and '' != params.commodityAttributeValues" >
+        and t.commodity_attribute_values = #{params.commodityAttributeValues,jdbcType=VARCHAR}
+      </if>
+      <if test="params.buyNum != null" >
+        and t.buy_num = #{params.buyNum,jdbcType=INTEGER}
+      </if>
+      <if test="params.commodityPrice != null" >
+        and t.commodity_price = #{params.commodityPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="params.commodityPriceTotal != null" >
+        and t.commodity_price_total = #{params.commodityPriceTotal,jdbcType=DECIMAL}
+      </if>
+      <if test="params.supply != null" >
+        and t.supply = #{params.supply,jdbcType=DECIMAL}
+      </if>
+      <if test="params.supplyAmount != null" >
+        and t.supply_amount = #{params.supplyAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="params.points != null" >
+        and t.points = #{params.points,jdbcType=DECIMAL}
+      </if>
+      <if test="params.pointsAmount != null" >
+        and t.points_amount = #{params.pointsAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="params.payableAmount != null" >
+        and t.payable_amount = #{params.payableAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="params.payableObtainAmount != null" >
+        and t.payable_obtain_amount = #{params.payableObtainAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="params.refundableAmount != null" >
+        and t.refundable_amount = #{params.refundableAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="params.vendorCode != null and '' != params.vendorCode" >
+        and t.vendor_code = #{params.vendorCode,jdbcType=VARCHAR}
+      </if>
+      <if test="params.vendorName != null and '' != params.vendorName" >
+        and t.vendor_name = #{params.vendorName,jdbcType=VARCHAR}
+      </if>
+      <if test="params.vendorEffectDate != null" >
+        and t.vendor_effect_date = #{params.vendorEffectDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.purchaseType != null and '' != params.purchaseType" >
+        and t.purchase_type = #{params.purchaseType,jdbcType=VARCHAR}
+      </if>
+      <if test="params.purchaseTypeEffectDate != null" >
+        and t.purchase_type_effect_date = #{params.purchaseTypeEffectDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.settlementPattern != null and '' != params.settlementPattern" >
+        and t.settlement_pattern = #{params.settlementPattern,jdbcType=VARCHAR}
+      </if>
+      <if test="params.settlementPatternEffectDate != null" >
+        and t.settlement_pattern_effect_date = #{params.settlementPatternEffectDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.createBy != null and '' != params.createBy" >
+        and t.create_by = #{params.createBy.id,jdbcType=VARCHAR}
+      </if>
+      <if test="params.createDate != null" >
+        and t.create_date = #{params.createDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="params.lastUpdateBy != null and '' != params.lastUpdateBy" >
+        and t.last_update_by = #{params.lastUpdateBy.id,jdbcType=VARCHAR}
+      </if>
+      <if test="params.lastUpdateDate != null" >
+        and t.last_update_date = #{params.lastUpdateDate,jdbcType=TIMESTAMP}
+      </if>
+    </if>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from bill_detail t 
+    where t.id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByParams" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from bill_detail t 
+    where 1=1
+    <include refid="condition" />
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer" >
+    select count(1) as s from bill_detail t  where 1=1
+    <include refid="condition" />
+  </select>
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from bill_detail t 
+    where 1=1
+    <include refid="condition" />
+    <if test="orderByField != null and ''!=orderByField" >
+      order by t.${orderByField} 
+      <if test="orderByField" >
+        ${orderBy}
+      </if>
+    </if>
+  </select>
+  
+  <!-- 获取需要产生应付账单的数据（按供应商分组） -->
+  <select id="findProducePayableBillList" resultType="com.ffzx.stms.model.Bill"  parameterType="map">
+  	SELECT
+		bd.type,
+		bd.vendor_code AS vendorCode,
+		bd.vendor_name AS vendorName,
+		IFNULL(sum(bd.commodity_price_total), 0) AS goodsTotalCount,
+		IFNULL(sum(bd.supply_amount), 0) AS supplyTotal,
+	  	IFNULL(sum(bd.points_amount), 0) AS pointsAmountTotal,
+		IFNULL(sum(bd.payable_amount), 0) AS payableAmountTotal,
+		IFNULL(sum(bd.payable_obtain_amount), 0) AS payableObtainAmountTotal,
+		IFNULL(sum(bd.refundable_amount), 0) AS refundBillTotalCount,
+		min(bd.create_date) AS businessStartDateTime,
+		max(bd.create_date) AS businessEndDateTime
+	FROM
+		bill_detail bd
+	WHERE 1=1 
+	  <if test="params.type != null and '' != params.type" >
+        and bd.type = #{params.type,jdbcType=VARCHAR}
+      </if>
+	  <if test="params.payableStatus != null and '' != params.payableStatus" >
+        and bd.payable_status = #{params.payableStatus,jdbcType=VARCHAR}
+      </if>
+	GROUP BY
+		bd.type,
+		bd.vendor_code
+  </select>
+  
+  <!-- 根据应付账单编号获取账单明细数据 -->
+  <select id="findBillDetailListByBillList" resultMap="superResultMap"  parameterType="java.util.List">
+  	select 
+    <include refid="Base_Column_List" />,
+    <include refid="super_Column_List" /> 
+    from bill_detail t, bill b 
+    where 
+    	t.type = '0' 
+    	and t.bill_no = b.bill_no 
+   		and t.bill_no IN 
+		<foreach collection="billNoList" item="val" index="index" open="(" close=")" separator="," >
+			#{val,jdbcType=VARCHAR}
+		</foreach>
+    order by t.create_date DESC
+  </select>
+  
+  
+  
+    
+  <!-- 根据退款账单编号获取账单明细数据 -->
+  <select id="findBillDetailByBillNo" resultMap="superResultMap"  parameterType="java.util.List">
+  	select 
+    <include refid="Base_Column_List" />,
+    <include refid="super_Column_List" />
+    from bill_detail t, bill b 
+    where 
+    	t.type = '1' 
+    	and t.bill_no = b.bill_no 
+   		and t.bill_no IN 
+		<foreach collection="billNoList" item="val" index="index" open="(" close=")" separator="," >
+			#{val,jdbcType=VARCHAR}
+		</foreach>
+    order by t.create_date DESC
+  </select>
+  
+  <select id="findBillDetailByVendorCode" resultMap="BaseResultMap" parameterType="map" >
+    SELECT 
+     <include refid="Base_Column_List" />
+    FROM bill_detail AS t 
+    INNER JOIN bill_detail AS bdPay ON (t.order_no = bdPay.order_no AND t.sku_code = bdPay.sku_code)
+    INNER JOIN bill AS bPay ON bPay.bill_no = bdPay.bill_no
+    WHERE 1=1 
+    AND bdPay.payable_status = '3'
+    AND bPay.bill_status = '2'
+    AND t.refund_status = '1'
+    AND t.`type` = '1'
+    and t.vendor_code = #{vendorCode,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="getRefundBuyNumSum" resultType="java.lang.Integer" parameterType="java.lang.String" >
+   	 select sum(IFNULL(bd.buy_num,0))
+	 from bill_detail as bd 
+	 where 1=1
+	and bd.sku_code = #{skuCode,jdbcType=VARCHAR}
+	and bd.type = #{type,jdbcType=VARCHAR}
+	and bd.order_no = #{orderNo,jdbcType=VARCHAR}
+	GROUP BY bd.order_no,bd.sku_code,bd.type
+   </select>
+   
+   <select id="getBillRefund" resultMap="BaseResultMap" parameterType="java.lang.String" >
+   	 select 
+   	 <include refid="Base_Column_List" />
+	 from bill_detail  t 
+	 where 1=1
+	 and t.sku_code = #{skuCode,jdbcType=VARCHAR}
+	 and t.type = #{type,jdbcType=VARCHAR}
+	 and t.order_no = #{orderNo,jdbcType=VARCHAR}
+	 and t.refund_status = #{reFundStatus,jdbcType=VARCHAR}
+   </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from bill_detail
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByPrimarayKeyForModel" parameterType="com.ffzx.stms.model.BillDetail" >
+    delete from bill_detail
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ffzx.stms.model.BillDetail" >
+    insert into bill_detail (id, bill_no, order_no, 
+      outbound_no, refund_no, order_create_date, 
+      pay_time, outbound_time, refund_time, 
+      payable_status, refund_status, type, 
+      commodity_code, sku_bar_code, sku_code, 
+      commodity_name, commodity_attribute_values, 
+      buy_num, commodity_price, commodity_price_total, 
+      supply, supply_amount, points, 
+      points_amount, payable_amount, payable_obtain_amount, 
+      refundable_amount, vendor_code, vendor_name, 
+      vendor_effect_date, purchase_type, purchase_type_effect_date, 
+      settlement_pattern, settlement_pattern_effect_date, 
+      create_by, create_date, last_update_by, 
+      last_update_date)
+    values (#{id,jdbcType=VARCHAR}, #{billNo,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, 
+      #{outboundNo,jdbcType=VARCHAR}, #{refundNo,jdbcType=VARCHAR}, #{orderCreateDate,jdbcType=TIMESTAMP}, 
+      #{payTime,jdbcType=TIMESTAMP}, #{outboundTime,jdbcType=TIMESTAMP}, #{refundTime,jdbcType=TIMESTAMP}, 
+      #{payableStatus,jdbcType=VARCHAR}, #{refundStatus,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{commodityCode,jdbcType=VARCHAR}, #{skuBarCode,jdbcType=VARCHAR}, #{skuCode,jdbcType=VARCHAR}, 
+      #{commodityName,jdbcType=VARCHAR}, #{commodityAttributeValues,jdbcType=VARCHAR}, 
+      #{buyNum,jdbcType=INTEGER}, #{commodityPrice,jdbcType=DECIMAL}, #{commodityPriceTotal,jdbcType=DECIMAL}, 
+      #{supply,jdbcType=DECIMAL}, #{supplyAmount,jdbcType=DECIMAL}, #{points,jdbcType=DECIMAL}, 
+      #{pointsAmount,jdbcType=DECIMAL}, #{payableAmount,jdbcType=DECIMAL}, #{payableObtainAmount,jdbcType=DECIMAL}, 
+      #{refundableAmount,jdbcType=DECIMAL}, #{vendorCode,jdbcType=VARCHAR}, #{vendorName,jdbcType=VARCHAR}, 
+      #{vendorEffectDate,jdbcType=TIMESTAMP}, #{purchaseType,jdbcType=VARCHAR}, #{purchaseTypeEffectDate,jdbcType=TIMESTAMP}, 
+      #{settlementPattern,jdbcType=VARCHAR}, #{settlementPatternEffectDate,jdbcType=TIMESTAMP}, 
+      #{createBy.id,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{lastUpdateBy.id,jdbcType=VARCHAR}, 
+      #{lastUpdateDate,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <!-- 批量保存数据 -->
+  <insert id="insertBatch" parameterType="java.util.List" >
+  	<![CDATA[
+   	INSERT INTO bill_detail
+		(
+		  	id, bill_no, order_no, 
+	      outbound_no, refund_no, order_create_date, 
+	      pay_time, outbound_time, refund_time, 
+	      payable_status, refund_status, type, 
+	      commodity_code, sku_bar_code, sku_code, commodity_name, 
+	      commodity_attribute_values, buy_num, commodity_price, 
+	      commodity_price_total, supply, supply_amount, 
+	      points, points_amount, payable_amount, 
+	      payable_obtain_amount, refundable_amount, 
+	      vendor_code, vendor_name, vendor_effect_date, 
+	      purchase_type, purchase_type_effect_date, 
+	      settlement_pattern, settlement_pattern_effect_date, 
+	      create_by, create_date, last_update_by, 
+	      last_update_date
+		) VALUES
+		]]>
+		
+	  <foreach collection="billDetailList" item="item" index="index" separator="," >
+			(
+			  #{item.id,jdbcType=VARCHAR}, #{item.billNo,jdbcType=VARCHAR}, #{item.orderNo,jdbcType=VARCHAR}, 
+		      #{item.outboundNo,jdbcType=VARCHAR}, #{item.refundNo,jdbcType=VARCHAR}, #{item.orderCreateDate,jdbcType=TIMESTAMP}, 
+		      #{item.payTime,jdbcType=TIMESTAMP}, #{item.outboundTime,jdbcType=TIMESTAMP}, #{item.refundTime,jdbcType=TIMESTAMP}, 
+		      #{item.payableStatus,jdbcType=VARCHAR}, #{item.refundStatus,jdbcType=VARCHAR}, #{item.type,jdbcType=VARCHAR}, 
+		      #{item.commodityCode,jdbcType=VARCHAR}, #{item.skuBarCode,jdbcType=VARCHAR}, #{item.skuCode,jdbcType=VARCHAR}, #{item.commodityName,jdbcType=VARCHAR}, 
+		      #{item.commodityAttributeValues,jdbcType=VARCHAR}, #{item.buyNum,jdbcType=INTEGER}, #{item.commodityPrice,jdbcType=DECIMAL}, 
+		      #{item.commodityPriceTotal,jdbcType=DECIMAL}, #{item.supply,jdbcType=DECIMAL}, #{item.supplyAmount,jdbcType=DECIMAL}, 
+		      #{item.points,jdbcType=DECIMAL}, #{item.pointsAmount,jdbcType=DECIMAL}, #{item.payableAmount,jdbcType=DECIMAL}, 
+		      #{item.payableObtainAmount,jdbcType=DECIMAL}, #{item.refundableAmount,jdbcType=DECIMAL}, 
+		      #{item.vendorCode,jdbcType=VARCHAR}, #{item.vendorName,jdbcType=VARCHAR}, #{item.vendorEffectDate,jdbcType=TIMESTAMP}, 
+		      #{item.purchaseType,jdbcType=VARCHAR}, #{item.purchaseTypeEffectDate,jdbcType=TIMESTAMP}, 
+		      #{item.settlementPattern,jdbcType=VARCHAR}, #{item.settlementPatternEffectDate,jdbcType=TIMESTAMP}, 
+		      #{item.createBy.id,jdbcType=VARCHAR}, #{item.createDate,jdbcType=TIMESTAMP}, #{item.lastUpdateBy.id,jdbcType=VARCHAR}, 
+		      #{item.lastUpdateDate,jdbcType=TIMESTAMP}
+			)
+	   </foreach>
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.ffzx.stms.model.BillDetail" >
+    insert into bill_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billNo != null" >
+        bill_no,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="outboundNo != null" >
+        outbound_no,
+      </if>
+      <if test="refundNo != null" >
+        refund_no,
+      </if>
+      <if test="orderCreateDate != null" >
+        order_create_date,
+      </if>
+      <if test="payTime != null" >
+        pay_time,
+      </if>
+      <if test="outboundTime != null" >
+        outbound_time,
+      </if>
+      <if test="refundTime != null" >
+        refund_time,
+      </if>
+      <if test="payableStatus != null" >
+        payable_status,
+      </if>
+      <if test="refundStatus != null" >
+        refund_status,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="commodityCode != null" >
+        commodity_code,
+      </if>
+      <if test="skuBarCode != null" >
+        sku_bar_code,
+      </if>
+      <if test="skuCode != null" >
+        sku_code,
+      </if>
+      <if test="commodityName != null" >
+        commodity_name,
+      </if>
+      <if test="commodityAttributeValues != null" >
+        commodity_attribute_values,
+      </if>
+      <if test="buyNum != null" >
+        buy_num,
+      </if>
+      <if test="commodityPrice != null" >
+        commodity_price,
+      </if>
+      <if test="commodityPriceTotal != null" >
+        commodity_price_total,
+      </if>
+      <if test="supply != null" >
+        supply,
+      </if>
+      <if test="supplyAmount != null" >
+        supply_amount,
+      </if>
+      <if test="points != null" >
+        points,
+      </if>
+      <if test="pointsAmount != null" >
+        points_amount,
+      </if>
+      <if test="payableAmount != null" >
+        payable_amount,
+      </if>
+      <if test="payableObtainAmount != null" >
+        payable_obtain_amount,
+      </if>
+      <if test="refundableAmount != null" >
+        refundable_amount,
+      </if>
+      <if test="vendorCode != null" >
+        vendor_code,
+      </if>
+      <if test="vendorName != null" >
+        vendor_name,
+      </if>
+      <if test="vendorEffectDate != null" >
+        vendor_effect_date,
+      </if>
+      <if test="purchaseType != null" >
+        purchase_type,
+      </if>
+      <if test="purchaseTypeEffectDate != null" >
+        purchase_type_effect_date,
+      </if>
+      <if test="settlementPattern != null" >
+        settlement_pattern,
+      </if>
+      <if test="settlementPatternEffectDate != null" >
+        settlement_pattern_effect_date,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="billNo != null" >
+        #{billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="outboundNo != null" >
+        #{outboundNo,jdbcType=VARCHAR},
+      </if>
+      <if test="refundNo != null" >
+        #{refundNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderCreateDate != null" >
+        #{orderCreateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payTime != null" >
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="outboundTime != null" >
+        #{outboundTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="refundTime != null" >
+        #{refundTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payableStatus != null" >
+        #{payableStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="refundStatus != null" >
+        #{refundStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityCode != null" >
+        #{commodityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="skuBarCode != null" >
+        #{skuBarCode,jdbcType=VARCHAR},
+      </if>
+      <if test="skuCode != null" >
+        #{skuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityName != null" >
+        #{commodityName,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityAttributeValues != null" >
+        #{commodityAttributeValues,jdbcType=VARCHAR},
+      </if>
+      <if test="buyNum != null" >
+        #{buyNum,jdbcType=INTEGER},
+      </if>
+      <if test="commodityPrice != null" >
+        #{commodityPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="commodityPriceTotal != null" >
+        #{commodityPriceTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="supply != null" >
+        #{supply,jdbcType=DECIMAL},
+      </if>
+      <if test="supplyAmount != null" >
+        #{supplyAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="points != null" >
+        #{points,jdbcType=DECIMAL},
+      </if>
+      <if test="pointsAmount != null" >
+        #{pointsAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="payableAmount != null" >
+        #{payableAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="payableObtainAmount != null" >
+        #{payableObtainAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="refundableAmount != null" >
+        #{refundableAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="vendorCode != null" >
+        #{vendorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="vendorName != null" >
+        #{vendorName,jdbcType=VARCHAR},
+      </if>
+      <if test="vendorEffectDate != null" >
+        #{vendorEffectDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="purchaseType != null" >
+        #{purchaseType,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseTypeEffectDate != null" >
+        #{purchaseTypeEffectDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settlementPattern != null" >
+        #{settlementPattern,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementPatternEffectDate != null" >
+        #{settlementPatternEffectDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        #{lastUpdateBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ffzx.stms.model.BillDetail" >
+    update bill_detail
+    <set >
+      <if test="billNo != null" >
+        bill_no = #{billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="outboundNo != null" >
+        outbound_no = #{outboundNo,jdbcType=VARCHAR},
+      </if>
+      <if test="refundNo != null" >
+        refund_no = #{refundNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderCreateDate != null" >
+        order_create_date = #{orderCreateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payTime != null" >
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="outboundTime != null" >
+        outbound_time = #{outboundTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="refundTime != null" >
+        refund_time = #{refundTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payableStatus != null" >
+        payable_status = #{payableStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="refundStatus != null" >
+        refund_status = #{refundStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityCode != null" >
+        commodity_code = #{commodityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="skuBarCode != null" >
+        sku_bar_code = #{skuBarCode,jdbcType=VARCHAR},
+      </if>
+      <if test="skuCode != null" >
+        sku_code = #{skuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityName != null" >
+        commodity_name = #{commodityName,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityAttributeValues != null" >
+        commodity_attribute_values = #{commodityAttributeValues,jdbcType=VARCHAR},
+      </if>
+      <if test="buyNum != null" >
+        buy_num = #{buyNum,jdbcType=INTEGER},
+      </if>
+      <if test="commodityPrice != null" >
+        commodity_price = #{commodityPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="commodityPriceTotal != null" >
+        commodity_price_total = #{commodityPriceTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="supply != null" >
+        supply = #{supply,jdbcType=DECIMAL},
+      </if>
+      <if test="supplyAmount != null" >
+        supply_amount = #{supplyAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="points != null" >
+        points = #{points,jdbcType=DECIMAL},
+      </if>
+      <if test="pointsAmount != null" >
+        points_amount = #{pointsAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="payableAmount != null" >
+        payable_amount = #{payableAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="payableObtainAmount != null" >
+        payable_obtain_amount = #{payableObtainAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="refundableAmount != null" >
+        refundable_amount = #{refundableAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="vendorCode != null" >
+        vendor_code = #{vendorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="vendorName != null" >
+        vendor_name = #{vendorName,jdbcType=VARCHAR},
+      </if>
+      <if test="vendorEffectDate != null" >
+        vendor_effect_date = #{vendorEffectDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="purchaseType != null" >
+        purchase_type = #{purchaseType,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseTypeEffectDate != null" >
+        purchase_type_effect_date = #{purchaseTypeEffectDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settlementPattern != null" >
+        settlement_pattern = #{settlementPattern,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementPatternEffectDate != null" >
+        settlement_pattern_effect_date = #{settlementPatternEffectDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null" >
+        last_update_by = #{lastUpdateBy.id,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ffzx.stms.model.BillDetail" >
+    update bill_detail
+    set bill_no = #{billNo,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      outbound_no = #{outboundNo,jdbcType=VARCHAR},
+      refund_no = #{refundNo,jdbcType=VARCHAR},
+      order_create_date = #{orderCreateDate,jdbcType=TIMESTAMP},
+      pay_time = #{payTime,jdbcType=TIMESTAMP},
+      outbound_time = #{outboundTime,jdbcType=TIMESTAMP},
+      refund_time = #{refundTime,jdbcType=TIMESTAMP},
+      payable_status = #{payableStatus,jdbcType=VARCHAR},
+      refund_status = #{refundStatus,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      commodity_code = #{commodityCode,jdbcType=VARCHAR},
+      sku_bar_code = #{skuBarCode,jdbcType=VARCHAR},
+      sku_code = #{skuCode,jdbcType=VARCHAR},
+      commodity_name = #{commodityName,jdbcType=VARCHAR},
+      commodity_attribute_values = #{commodityAttributeValues,jdbcType=VARCHAR},
+      buy_num = #{buyNum,jdbcType=INTEGER},
+      commodity_price = #{commodityPrice,jdbcType=DECIMAL},
+      commodity_price_total = #{commodityPriceTotal,jdbcType=DECIMAL},
+      supply = #{supply,jdbcType=DECIMAL},
+      supply_amount = #{supplyAmount,jdbcType=DECIMAL},
+      points = #{points,jdbcType=DECIMAL},
+      points_amount = #{pointsAmount,jdbcType=DECIMAL},
+      payable_amount = #{payableAmount,jdbcType=DECIMAL},
+      payable_obtain_amount = #{payableObtainAmount,jdbcType=DECIMAL},
+      refundable_amount = #{refundableAmount,jdbcType=DECIMAL},
+      vendor_code = #{vendorCode,jdbcType=VARCHAR},
+      vendor_name = #{vendorName,jdbcType=VARCHAR},
+      vendor_effect_date = #{vendorEffectDate,jdbcType=TIMESTAMP},
+      purchase_type = #{purchaseType,jdbcType=VARCHAR},
+      purchase_type_effect_date = #{purchaseTypeEffectDate,jdbcType=TIMESTAMP},
+      settlement_pattern = #{settlementPattern,jdbcType=VARCHAR},
+      settlement_pattern_effect_date = #{settlementPatternEffectDate,jdbcType=TIMESTAMP},
+      create_by = #{createBy.id,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      last_update_by = #{lastUpdateBy.id,jdbcType=VARCHAR},
+      last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
